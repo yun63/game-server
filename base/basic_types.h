@@ -31,7 +31,7 @@ typedef uint16_t    uint16;
 typedef int32_t     int32;
 typedef uint32_t    uint32;
 
-#if defined(__LP64__) && !defined(OS_MACOSX) && !defined(OS_OPENBSD)
+#if defined(__LP64__)
 typedef long int64;
 typedef unsigned long uint64;
 #else

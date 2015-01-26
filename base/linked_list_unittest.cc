@@ -325,5 +325,5 @@ TEST(LinkedList, RemovedNodeHasNullNextPrevious) {
     EXPECT_EQ(NULL, n.previous());
 }
 
-};
-};
+} // namespace
+} // namespace base
