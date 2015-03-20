@@ -10,7 +10,7 @@
 INCPATH = -I. -I$(GTEST_DIR)/include  -I./protobuf/include
 
 ## 源代码目录
-SRCDIRS = src base
+SRCDIRS = src base src/test 
 
 ## 生成目标目录
 OBJ_DIR = object.dir
@@ -37,8 +37,8 @@ HDREXTS = .h .hh .hpp .h++ .hxx
 CPPFLAGS += -isystem $(GTEST_DIR)/include
 
 ## C/C++编译器编译选项
-CFLAGS   += -g #-Wall -Wextra
-CXXFLAGS += -g #-Wall -Wextra
+CFLAGS   += -Wall -fPIC #-Wall -Wextra
+CXXFLAGS += -Wall -fPIC #-Wall -Wextra
 
 ## 自定义编译选项
 MYCFLAGS = #-DENCODING_UTF8 -DCHARSET_SHOW_GBK 
@@ -71,8 +71,8 @@ MYLIBS = -L/usr/lib -lpthread \
 		 -L./protobuf/lib -lprotobuf \
 		 -L./lib -lgtest -lgtest_main
 
-COMPILE_C := $(CC) $(CFLAGS) $(MYCFLAGS) $(INCPATH) -c
-COMPILE_CXX := $(CXX) $(CXXFLAGS) $(MYCFLAGS) $(INCPATH) -c
+COMPILE_C := $(CC) $(CFLAGS) $(MYCFLAGS) $(INCPATH)
+COMPILE_CXX := $(CXX) $(CXXFLAGS) $(MYCFLAGS) $(INCPATH)
 
 ifeq ($(SRC_CXX),)
 	LINK = $(CC) $(CFLAGS) $(LDFLAGS) $(MYCFLAGS)
@@ -81,11 +81,11 @@ else
 endif
 
 ifeq (DEBUG, 1)
-	CFLAGS = -g3 -DDEBUG
-	CXXFLAGS = -g3 -DDEBUG
+	CFLAGS		+= -g3 -O0 -DDEBUG
+	CXXFLAGS	+= -g3 -O0 -DDEBUG
 else
-	CFLAGS = -O3 -DNDEBUG
-	CXXFLAGS = -O3 -DNDEBUG
+	CFLAGS		+= -O3 -DNDEBUG
+	CXXFLAGS	+= -O3 -DNDEBUG
 endif
 
 .PHONY: clean show
@@ -99,39 +99,39 @@ all: pb $(TARGETS)
 $(OBJ_DIR)/%.o:%.c
 	@mkdir -p $(@D)
 	@echo "\033[1;32mCOMPILING \033[0m"
-	$(COMPILE_C) $< -o $@
+	$(COMPILE_C) -c $< -o $@
 
 $(OBJ_DIR)/%.o:%.cc
 	@mkdir -p $(@D)
 	@echo "\033[1;32mCOMPILING \033[0m"
-	$(COMPILE_CXX) $< -o $@
+	$(COMPILE_CXX) -c $< -o $@
 
 $(OBJ_DIR)/%.o:%.cpp
 	@mkdir -p $(@D)
 	@echo "\033[1;32mCOMPILING \033[0m"
-	$(COMPILE_CXX) $< -o $@
+	$(COMPILE_CXX) -c $< -o $@
 
 $(OBJ_DIR)/%.o:%.c++
 	@mkdir -p $(@D)
 	@echo "\033[1;32mCOMPILING \033[0m"
-	$(COMPILE_CXX) $< -o $@
+	$(COMPILE_CXX) -c $< -o $@
 
 $(OBJ_DIR)/%.o:%.cxx
 	@mkdir -p $(@D)
 	@echo "\033[1;32mCOMPILING \033[0m"
-	$(COMPILE_CXX) $< -o $@
+	$(COMPILE_CXX) -c $< -o $@
 
 %.o:%.c
 	@echo "\033[1;32mCOMPILING \033[0m"
-	$(COMPILE_C) $< -o $@
+	$(COMPILE_C) -c $< -o $@
 
 %.o:%.cpp
 	@echo "\033[1;32mCOMPILING \033[0m"
-	$(COMPILE_CXX) $< -o $@
+	$(COMPILE_CXX) -c $< -o $@
 
 %.o:%.cc
 	@echo "\033[1;32mCOMPILING \033[0m"
-	$(COMPILE_CXX) $< -o $@
+	$(COMPILE_CXX) -c $< -o $@
 
 
 %.pb.cc: %.proto
