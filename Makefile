@@ -61,15 +61,11 @@ PROTO_CXX := $(patsubst %.proto, %.pb.cc, $(wildcard base/pb/*.proto))
 PROTO_OBJS := $(addprefix $(OBJ_DIR)/, $(addsuffix .o, $(basename $(PROTO_CXX))))
 
 
-## 系统库文件
-LIBS = -lpthread -lz -lm
-
-## 第三方库文件
-MYLIBS = -L/usr/lib -lpthread \
-		 -L/usr/lib -lm \
-		 -L/lib -L/usr/local/lib \
+## 库文件
+LIBS = -L/usr/lib -L/lib -L/usr/local/lib \
 		 -L./protobuf/lib -lprotobuf \
-		 -L./lib -lgtest -lgtest_main
+		 -L./lib -lgtest -lgtest_main \
+		 -lpthread -lz -lm
 
 COMPILE_C := $(CC) $(CFLAGS) $(MYCFLAGS) $(INCPATH)
 COMPILE_CXX := $(CXX) $(CXXFLAGS) $(MYCFLAGS) $(INCPATH)
@@ -157,15 +153,15 @@ gtest_main.o : $(GTEST_SRCS_)
 pb : $(PROTO_CXX)
 
 cloud : test_main.o $(PROTO_OBJS) $(OBJECTS) 
-	@$(LINK) -o $@ $^ $(MYLIBS) $(LIBS)
+	@$(LINK) -o $@ $^ $(LIBS)
 	@echo "\033[1;35mLINKING $@ \033[0m"
 
 add_person: add_person.o $(PROTO_OBJS) $(OBJECTS)
-	@$(LINK) -o $@ $^ $(MYLIBS) $(LIBS)
+	@$(LINK) -o $@ $^ $(LIBS)
 	@echo "\033[1;35mLINKING $@ \033[0m"
 
 list_people : list_people.o $(PROTO_OBJS) $(OBJECTS)
-	@$(LINK) -o $@ $^ $(MYLIBS) $(LIBS)
+	@$(LINK) -o $@ $^ $(LIBS)
 	@echo "\033[1;35mLINKING $@ \033[0m"
 
 
