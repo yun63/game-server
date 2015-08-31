@@ -21,6 +21,7 @@ message Person3 {
   repeated PhoneNumber phone = 4;
 }
 
+
 // Our address book file is just one of these.
 message AddressBook3 {
   repeated Person3 person = 1;

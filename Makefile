@@ -169,7 +169,6 @@ install:
 	mv -f $(TARGETS) $(BIN)
 
 clean:
-	-rm -f $(PROTO_INC) $(PROTO_CXX)
 	-rm -f *.o
 	-rm -f *~ core *.core
 	-rm -rf $(OBJ_DIR) 
