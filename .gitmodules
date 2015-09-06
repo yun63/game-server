@@ -1,0 +1,4 @@
+[submodule "3rd/protobuf-2.6.0"]
+    path = 3rd/protobuf-2.6.0
+    url = git@github.com:google/protobuf.git
+
