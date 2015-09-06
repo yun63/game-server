@@ -38,4 +38,4 @@ dlopen=''
 dlpreopen=''
 
 # Directory that this library needs to be installed in:
-libdir='/home/yun63/myself/c++/server/3rd/protobuf/lib'
+libdir='/home/yun63/repos/game-server/protobuf/lib'

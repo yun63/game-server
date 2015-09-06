@@ -1,4 +1,4 @@
-prefix=/home/yun63/myself/c++/server/3rd/protobuf
+prefix=/home/yun63/repos/game-server/protobuf
 exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include

@@ -17,7 +17,7 @@ old_library='libprotoc.a'
 inherited_linker_flags=' -pthread'
 
 # Libraries that this one depends upon.
-dependency_libs=' /home/yun63/myself/c++/server/3rd/protobuf/lib/libprotobuf.la -lpthread -lz'
+dependency_libs=' /home/yun63/repos/game-server/protobuf/lib/libprotobuf.la -lpthread -lz'
 
 # Names of additional weak libraries provided by this library
 weak_library_names=''
@@ -38,4 +38,4 @@ dlopen=''
 dlpreopen=''
 
 # Directory that this library needs to be installed in:
-libdir='/home/yun63/myself/c++/server/3rd/protobuf/lib'
+libdir='/home/yun63/repos/game-server/protobuf/lib'

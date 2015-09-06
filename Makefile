@@ -10,7 +10,7 @@
 INCPATH = -I. -I$(GTEST_DIR)/include  -I./protobuf/include
 
 ## 源代码目录
-SRCDIRS = src base src/test 
+SRCDIRS = base base/utils src src/test 
 
 ## 生成目标目录
 OBJ_DIR = object.dir
