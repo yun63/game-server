@@ -38,7 +38,7 @@ CPPFLAGS += -isystem $(GTEST_DIR)/include
 
 ## C/C++编译器编译选项
 CFLAGS   += -Wall -fPIC #-Wall -Wextra
-CXXFLAGS += -Wall -fPIC #-Wall -Wextra
+CXXFLAGS += --std=c++11 -Wall -fPIC #-Wall -Wextra
 
 ## 自定义编译选项
 MYCFLAGS = #-DENCODING_UTF8 -DCHARSET_SHOW_GBK 
