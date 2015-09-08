@@ -1,9 +1,8 @@
 *.o
 *.so
 *.a
-/bin/*
-/lib/*
-3rd/protobuf-2.6.1/*
+bin/*
+lib/*
 protobuf/*
 base/pb/*.h
 base/pb/*.cc
