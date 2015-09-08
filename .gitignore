@@ -1,8 +1,8 @@
 *.o
 *.so
 *.a
-bin/*
-lib/*
+/bin/*
+/lib/*
 base/pb/*.h
 base/pb/*.cc
 object.dir
