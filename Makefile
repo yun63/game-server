@@ -9,7 +9,7 @@
 ROOT=$(shell pwd)
 
 ## 头文件搜索路径 
-INCPATH = -I. -I$(GTEST_DIR)/include  -I./protobuf/include
+INCPATH = -I. -I$(GTEST_DIR)/include  #-I./protobuf/include
 
 ## 源代码目录
 SRCDIRS = base base/utils src src/test 
@@ -29,7 +29,7 @@ GTEST_SRCS_ = $(GTEST_DIR)/src/*.cc $(GTEST_DIR)/src/*.h $(GTEST_HEADERS)
 export LD_LIBRARY_PATH+=:./protobuf/lib/
 
 ## 可执行文件名称
-TARGETS = cloud add_person list_people
+TARGETS = cloud #add_person list_people
 
 ## 源文件类型
 SRCEXTS = .c .cc .cpp .c++ .cxx 
@@ -65,9 +65,10 @@ PROTO_OBJS := $(addprefix $(OBJ_DIR)/, $(addsuffix .o, $(basename $(PROTO_CXX)))
 
 ## 库文件
 LIBS = -L/usr/lib -L/lib -L/usr/local/lib \
-		 -L./protobuf/lib -lprotobuf \
 		 -L./lib -lgtest -lgtest_main \
 		 -lpthread -lz -lm
+		 #-L./protobuf/lib -lprotobuf \
+		 #-lpthread -lz -lm
 
 COMPILE_C := $(CC) $(CFLAGS) $(MYCFLAGS) $(INCPATH)
 COMPILE_CXX := $(CXX) $(CXXFLAGS) $(MYCFLAGS) $(INCPATH)
@@ -133,15 +134,7 @@ $(OBJ_DIR)/%.o:%.cxx
 
 
 %.pb.cc: %.proto
-	./protobuf/bin/protoc -I=base/pb/ --cpp_out=base/pb/ $<
-
-libgtest.a : gtest-all.o
-	$(AR) $(ARFLAGS) $@ $^
-	@mv $@ ./lib
-
-libgtest_main.a : gtest-all.o gtest_main.o
-	$(AR) $(ARFLAGS) $@ $^
-	@mv $@ ./lib
+	#./protobuf/bin/protoc -I=base/pb/ --cpp_out=base/pb/ $<
 
 gtest-all.o : $(GTEST_SRCS_)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I$(GTEST_DIR) -c $(GTEST_DIR)/src/gtest-all.cc
@@ -153,16 +146,20 @@ gtest_main.o : $(GTEST_SRCS_)
 deps : gtest protobuf
 
 gtest :
-	(cd $(ROOT)/3rd/gtest-1.7.0 && mkdir -p build && cd build && cmake .. && make)
+	(cd $(ROOT)/3rd/gtest-1.7.0 && mkdir -p build && \
+	 cd build && cmake .. && make && \
+	 cp -f libgtest.a libgtest_main.a $(ROOT)/lib)
 
 protobuf :
-	(cd $(ROOT)/3rd/protobuf-2.6.1 && ./configure --prefix=$(ROOT)/protobuf && make && make install)
+	(cd $(ROOT)/3rd/protobuf-2.6.1 && \
+	 ./configure --prefix=$(ROOT)/protobuf && \
+	 make && make install)
 
 ## 生成目标
 #-------------------------------------
 pb : $(PROTO_CXX)
 
-cloud : test_main.o $(PROTO_OBJS) $(OBJECTS) 
+cloud : test_main.o $(OBJECTS) 
 	@$(LINK) -o $@ $^ $(LIBS)
 	@echo "\033[1;35mLINKING $@ \033[0m"
 
