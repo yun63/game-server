@@ -9,7 +9,7 @@
 ROOT=$(shell pwd)
 
 ## 头文件搜索路径 
-INCPATH = -I. -I$(GTEST_DIR)/include  #-I./protobuf/include
+INCPATH = -I. -I$(GTEST_DIR)/include  -I./protobuf/include
 
 ## 源代码目录
 SRCDIRS = base base/utils src src/test 
@@ -29,7 +29,7 @@ GTEST_SRCS_ = $(GTEST_DIR)/src/*.cc $(GTEST_DIR)/src/*.h $(GTEST_HEADERS)
 export LD_LIBRARY_PATH+=:./protobuf/lib/
 
 ## 可执行文件名称
-TARGETS = cloud #add_person list_people
+TARGETS = cloud add_person list_people
 
 ## 源文件类型
 SRCEXTS = .c .cc .cpp .c++ .cxx 
@@ -66,9 +66,8 @@ PROTO_OBJS := $(addprefix $(OBJ_DIR)/, $(addsuffix .o, $(basename $(PROTO_CXX)))
 ## 库文件
 LIBS = -L/usr/lib -L/lib -L/usr/local/lib \
 		 -L./lib -lgtest -lgtest_main \
+		 -L./protobuf/lib -lprotobuf \
 		 -lpthread -lz -lm
-		 #-L./protobuf/lib -lprotobuf \
-		 #-lpthread -lz -lm
 
 COMPILE_C := $(CC) $(CFLAGS) $(MYCFLAGS) $(INCPATH)
 COMPILE_CXX := $(CXX) $(CXXFLAGS) $(MYCFLAGS) $(INCPATH)
