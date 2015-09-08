@@ -6,6 +6,8 @@
 #
 #############################################################################
 
+ROOT=$(shell pwd)
+
 ## 头文件搜索路径 
 INCPATH = -I. -I$(GTEST_DIR)/include  -I./protobuf/include
 
@@ -147,6 +149,14 @@ gtest-all.o : $(GTEST_SRCS_)
 gtest_main.o : $(GTEST_SRCS_)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I$(GTEST_DIR) -c $(GTEST_DIR)/src/gtest_main.cc
 	
+## 依赖
+deps : gtest protobuf
+
+gtest :
+	(cd $(ROOT)/3rd/gtest-1.7.0 && mkdir -p build && cd build && cmake .. && make)
+
+protobuf :
+	(cd $(ROOT)/3rd/protobuf-2.6.1 && ./configure --prefix=$(ROOT)/protobuf && make && make install)
 
 ## 生成目标
 #-------------------------------------
