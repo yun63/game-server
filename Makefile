@@ -135,14 +135,6 @@ $(OBJ_DIR)/%.o:%.cxx
 %.pb.cc: %.proto
 	./protobuf/bin/protoc -I=base/pb/ --cpp_out=base/pb/ $<
 
-libgtest.a : gtest-all.o
-	$(AR) $(ARFLAGS) $@ $^
-	@mv $@ ./lib
-
-libgtest_main.a : gtest-all.o gtest_main.o
-	$(AR) $(ARFLAGS) $@ $^
-	@mv $@ ./lib
-
 gtest-all.o : $(GTEST_SRCS_)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I$(GTEST_DIR) -c $(GTEST_DIR)/src/gtest-all.cc
 
