@@ -9,7 +9,7 @@
 ROOT=$(shell pwd)
 
 ## 头文件搜索路径 
-INCPATH = -I. -I$(GTEST_DIR)/include  -I./protobuf/include
+INCPATH = -I. -I$(GTEST_DIR)/include -I./protobuf/include
 
 ## 源代码目录
 SRCDIRS = base base/utils src src/test 
@@ -20,6 +20,9 @@ OBJ_DIR = object.dir
 ## 可执行程序目录
 BIN = bin
 
+## 测试代码目录
+TEST_DIR = test
+
 ## GTest测试框架目录
 GTEST_DIR = ./3rd/gtest-1.7.0
 GTEST_HEADERS = $(GTEST_DIR)/include/gtest/*.h \
@@ -29,18 +32,18 @@ GTEST_SRCS_ = $(GTEST_DIR)/src/*.cc $(GTEST_DIR)/src/*.h $(GTEST_HEADERS)
 export LD_LIBRARY_PATH+=:./protobuf/lib/
 
 ## 可执行文件名称
-TARGETS = cloud add_person list_people
+TARGETS = $(BIN)/cloud $(BIN)/add_person $(BIN)/list_people
 
 ## 源文件类型
-SRCEXTS = .c .cc .cpp .c++ .cxx 
+SRCEXTS = .c .cc .cpp .cxx 
 ## 头文件类型
-HDREXTS = .h .hh .hpp .h++ .hxx 
+HDREXTS = .h .hh .hpp .hxx 
 
 CPPFLAGS += -isystem $(GTEST_DIR)/include
 
 ## C/C++编译器编译选项
-CFLAGS   += -Wall -fPIC #-Wall -Wextra
-CXXFLAGS += --std=c++11 -Wall -fPIC #-Wall -Wextra
+CFLAGS += -Wall -fPIC
+CXXFLAGS += --std=c++11 -Wall -fPIC
 
 ## 自定义编译选项
 MYCFLAGS = #-DENCODING_UTF8 -DCHARSET_SHOW_GBK 
@@ -51,12 +54,14 @@ CXX = g++
 
 SOURCES := $(foreach d,$(SRCDIRS),$(wildcard $(addprefix $(d)/*, $(SRCEXTS))))
 HEADERS := $(foreach d,$(SRCDIRS),$(wildcard $(addprefix $(d)/*, $(HDREXTS))))
+TESTSRCS := $(wildcard $(TEST_DIR)/*.c) $(wildcard $(TEST_DIR)/*.cc) $(wildcard $(TEST_DIR)/*.cpp) $(wildcard $(TEST_DIR)/*.cxx)
 
 #$(warning $(SOURCES))
 #$(warning $(HEADERS))
 
 SRC_CXX := $(filter-out %.c,$(SOURCES))
 OBJECTS := $(addprefix $(OBJ_DIR)/, $(addsuffix .o, $(basename $(SOURCES))))
+TEST_OBJS := $(addsuffix .o, $(basename $(TESTSRCS)))
 
 PROTO_INC := $(patsubst %.proto, %.pb.h,  $(wildcard base/pb/*.proto))
 PROTO_CXX := $(patsubst %.proto, %.pb.cc, $(wildcard base/pb/*.proto))
@@ -64,10 +69,10 @@ PROTO_OBJS := $(addprefix $(OBJ_DIR)/, $(addsuffix .o, $(basename $(PROTO_CXX)))
 
 
 ## 库文件
-LIBS = -L/usr/lib -L/lib -L/usr/local/lib \
-		 -L./lib -lgtest -lgtest_main \
-		 -L./protobuf/lib -lprotobuf \
-		 -lpthread -lz -lm
+LIBS = -L/usr/local/lib \
+	   -L./lib -lgtest -lgtest_main \
+	   -L./protobuf/lib -lprotobuf \
+	   -lpthread -lz -lm
 
 COMPILE_C := $(CC) $(CFLAGS) $(MYCFLAGS) $(INCPATH)
 COMPILE_CXX := $(CXX) $(CXXFLAGS) $(MYCFLAGS) $(INCPATH)
@@ -79,11 +84,11 @@ else
 endif
 
 ifeq (DEBUG, 1)
-	CFLAGS		+= -g3 -O0 -DDEBUG
-	CXXFLAGS	+= -g3 -O0 -DDEBUG
+	CFLAGS += -g3 -O0
+	CXXFLAGS += -g3 -O0
 else
-	CFLAGS		+= -O3 -DNDEBUG
-	CXXFLAGS	+= -O3 -DNDEBUG
+	CFLAGS += -O3
+	CXXFLAGS += -O3
 endif
 
 .PHONY: deps gtest protobuf clean 
@@ -96,51 +101,32 @@ all: pb $(TARGETS)
 #----------------------------------------
 $(OBJ_DIR)/%.o:%.c
 	@mkdir -p $(@D)
-	@echo "\033[1;32mCOMPILING \033[0m"
 	$(COMPILE_C) -c $< -o $@
 
 $(OBJ_DIR)/%.o:%.cc
 	@mkdir -p $(@D)
-	@echo "\033[1;32mCOMPILING \033[0m"
 	$(COMPILE_CXX) -c $< -o $@
 
 $(OBJ_DIR)/%.o:%.cpp
 	@mkdir -p $(@D)
-	@echo "\033[1;32mCOMPILING \033[0m"
-	$(COMPILE_CXX) -c $< -o $@
-
-$(OBJ_DIR)/%.o:%.c++
-	@mkdir -p $(@D)
-	@echo "\033[1;32mCOMPILING \033[0m"
 	$(COMPILE_CXX) -c $< -o $@
 
 $(OBJ_DIR)/%.o:%.cxx
 	@mkdir -p $(@D)
-	@echo "\033[1;32mCOMPILING \033[0m"
 	$(COMPILE_CXX) -c $< -o $@
 
-%.o:%.c
-	@echo "\033[1;32mCOMPILING \033[0m"
+$(TEST_DIR)/%.o:%.c
 	$(COMPILE_C) -c $< -o $@
 
-%.o:%.cpp
-	@echo "\033[1;32mCOMPILING \033[0m"
+$(TEST_DIR)/%.o:%.cpp
 	$(COMPILE_CXX) -c $< -o $@
 
-%.o:%.cc
-	@echo "\033[1;32mCOMPILING \033[0m"
+$(TEST_DIR)/%.o:%.cc
 	$(COMPILE_CXX) -c $< -o $@
-
 
 %.pb.cc: %.proto
 	./protobuf/bin/protoc -I=base/pb/ --cpp_out=base/pb/ $<
 
-gtest-all.o : $(GTEST_SRCS_)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I$(GTEST_DIR) -c $(GTEST_DIR)/src/gtest-all.cc
-
-gtest_main.o : $(GTEST_SRCS_)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I$(GTEST_DIR) -c $(GTEST_DIR)/src/gtest_main.cc
-	
 ## 依赖
 deps : gtest protobuf
 
@@ -158,18 +144,14 @@ protobuf :
 #-------------------------------------
 pb : $(PROTO_CXX)
 
-cloud : test_main.o $(OBJECTS) 
-	@$(LINK) -o $@ $^ $(LIBS)
-	echo -e "\e[1;35mLINKING $@ \e[0m"
+$(BIN)/cloud : test/test_main.o $(OBJECTS) 
+	$(LINK) -o $@ $^ $(LIBS)
 
-add_person: add_person.o $(PROTO_OBJS) $(OBJECTS)
-	@$(LINK) -o $@ $^ $(LIBS)
-	echo -e "\e[1;35mLINKING $@ \e[0m"
+$(BIN)/add_person: test/add_person.o $(PROTO_OBJS)
+	$(LINK) -o $@ $^ $(LIBS)
 
-list_people : list_people.o $(PROTO_OBJS) $(OBJECTS)
-	@$(LINK) -o $@ $^ $(LIBS)
-	echo -e "\3[1;35mLINKING $@ \e[0m"
-
+$(BIN)/list_people : test/list_people.o $(PROTO_OBJS)
+	$(LINK) -o $@ $^ $(LIBS)
 
 install:
 	mv -f $(TARGETS) $(BIN)
