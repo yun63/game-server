@@ -86,7 +86,7 @@ else
 	CXXFLAGS	+= -O3 -DNDEBUG
 endif
 
-.PHONY: clean show
+.PHONY: deps gtest protobuf clean 
 
 .SUFFIXES:
 
@@ -160,15 +160,15 @@ pb : $(PROTO_CXX)
 
 cloud : test_main.o $(OBJECTS) 
 	@$(LINK) -o $@ $^ $(LIBS)
-	@echo "\033[1;35mLINKING $@ \033[0m"
+	echo -e "\e[1;35mLINKING $@ \e[0m"
 
 add_person: add_person.o $(PROTO_OBJS) $(OBJECTS)
 	@$(LINK) -o $@ $^ $(LIBS)
-	@echo "\033[1;35mLINKING $@ \033[0m"
+	echo -e "\e[1;35mLINKING $@ \e[0m"
 
 list_people : list_people.o $(PROTO_OBJS) $(OBJECTS)
 	@$(LINK) -o $@ $^ $(LIBS)
-	@echo "\033[1;35mLINKING $@ \033[0m"
+	echo -e "\3[1;35mLINKING $@ \e[0m"
 
 
 install:
