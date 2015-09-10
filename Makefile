@@ -54,14 +54,14 @@ CXX = g++
 
 SOURCES := $(foreach d,$(SRCDIRS),$(wildcard $(addprefix $(d)/*, $(SRCEXTS))))
 HEADERS := $(foreach d,$(SRCDIRS),$(wildcard $(addprefix $(d)/*, $(HDREXTS))))
-TESTSRCS := $(wildcard $(TEST_DIR)/*.c) $(wildcard $(TEST_DIR)/*.cc) $(wildcard $(TEST_DIR)/*.cpp) $(wildcard $(TEST_DIR)/*.cxx)
+#TESTSRCS := $(wildcard $(TEST_DIR)/*.c) $(wildcard $(TEST_DIR)/*.cc) $(wildcard $(TEST_DIR)/*.cpp) $(wildcard $(TEST_DIR)/*.cxx)
 
 #$(warning $(SOURCES))
 #$(warning $(HEADERS))
 
 SRC_CXX := $(filter-out %.c,$(SOURCES))
 OBJECTS := $(addprefix $(OBJ_DIR)/, $(addsuffix .o, $(basename $(SOURCES))))
-TEST_OBJS := $(addsuffix .o, $(basename $(TESTSRCS)))
+#TEST_OBJS := $(addsuffix .o, $(basename $(TESTSRCS)))
 
 PROTO_INC := $(patsubst %.proto, %.pb.h,  $(wildcard base/pb/*.proto))
 PROTO_CXX := $(patsubst %.proto, %.pb.cc, $(wildcard base/pb/*.proto))
@@ -115,13 +115,13 @@ $(OBJ_DIR)/%.o:%.cxx
 	@mkdir -p $(@D)
 	$(COMPILE_CXX) -c $< -o $@
 
-$(TEST_DIR)/%.o:%.c
+%.o:%.c
 	$(COMPILE_C) -c $< -o $@
 
-$(TEST_DIR)/%.o:%.cpp
+%.o:%.cpp
 	$(COMPILE_CXX) -c $< -o $@
 
-$(TEST_DIR)/%.o:%.cc
+%.o:%.cc
 	$(COMPILE_CXX) -c $< -o $@
 
 %.pb.cc: %.proto
@@ -161,6 +161,5 @@ clean:
 	-rm -f *~ core *.core
 	-rm -rf $(OBJ_DIR) 
 	-rm -f $(TARGETS) 
-	-rm -f $(BIN)/*
 
 #############################################################################
