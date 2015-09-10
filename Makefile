@@ -32,7 +32,7 @@ GTEST_SRCS_ = $(GTEST_DIR)/src/*.cc $(GTEST_DIR)/src/*.h $(GTEST_HEADERS)
 export LD_LIBRARY_PATH+=:./protobuf/lib/
 
 ## 可执行文件名称
-TARGETS = $(BIN)/cloud $(BIN)/add_person $(BIN)/list_people
+TARGETS = cloud add_person list_people
 
 ## 源文件类型
 SRCEXTS = .c .cc .cpp .cxx 
@@ -95,7 +95,7 @@ endif
 
 .SUFFIXES:
 
-all: pb $(TARGETS)
+all: pb $(addprefix $(BIN)/*, $(TARGETS))
 
 ## 生成所有(.o)文件规则.
 #----------------------------------------
