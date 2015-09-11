@@ -80,10 +80,10 @@ COMPILE_CXX := $(CXX) $(CXXFLAGS) $(MYCFLAGS) $(INCPATH)
 ifeq ($(SRC_CXX),)
 	LINK = $(CC) $(CFLAGS) $(LDFLAGS) $(MYCFLAGS)
 else
-	LINK = $(CXX) $(CXXFLAGS) $(LDFLAGSk) $(MYCFLAGS)
+	LINK = $(CXX) $(CXXFLAGS) $(LDFLAGS) $(MYCFLAGS)
 endif
 
-ifeq (DEBUG, 1)
+ifeq ($DEBUG, 1)
 	CFLAGS += -g3 -O0
 	CXXFLAGS += -g3 -O0
 else
@@ -152,9 +152,6 @@ $(BIN)/add_person: test/add_person.o $(PROTO_OBJS)
 
 $(BIN)/list_people : test/list_people.o $(PROTO_OBJS)
 	$(LINK) -o $@ $^ $(LIBS)
-
-install:
-	mv -f $(TARGETS) $(BIN)
 
 clean:
 	-rm -f *.o
