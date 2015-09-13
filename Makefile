@@ -9,10 +9,10 @@
 ROOT=$(shell pwd)
 
 ## 头文件搜索路径 
-INCPATH = -I. -I$(GTEST_DIR)/include -I./protobuf/include
+INCPATH ?= -I. -I$(GTEST_DIR)/include -I./protobuf/include
 
 ## 源代码目录
-SRCDIRS = base base/utils src src/test 
+SRCDIRS ?= base base/utils src src/test 
 
 ## 生成目标目录
 OBJ_DIR = object.dir
@@ -24,20 +24,20 @@ BIN = bin
 TEST_DIR = test
 
 ## GTest测试框架目录
-GTEST_DIR = ./3rd/gtest-1.7.0
-GTEST_HEADERS = $(GTEST_DIR)/include/gtest/*.h \
+GTEST_DIR := ./3rd/gtest-1.7.0
+GTEST_HEADERS := $(GTEST_DIR)/include/gtest/*.h \
 				$(GTEST_DIR)/include/gtest/internal/*.h 
-GTEST_SRCS_ = $(GTEST_DIR)/src/*.cc $(GTEST_DIR)/src/*.h $(GTEST_HEADERS)
+GTEST_SRCS_ := $(GTEST_DIR)/src/*.cc $(GTEST_DIR)/src/*.h $(GTEST_HEADERS)
 
 export LD_LIBRARY_PATH+=:./protobuf/lib/
 
 ## 可执行文件名称
-TARGETS = cloud add_person list_people
+TARGETS ?= cloud add_person list_people
 
 ## 源文件类型
-SRCEXTS = .c .cc .cpp .cxx 
+SRCEXTS := .c .cc .cpp .cxx 
 ## 头文件类型
-HDREXTS = .h .hh .hpp .hxx 
+HDREXTS := .h .hh .hpp .hxx 
 
 CPPFLAGS += -isystem $(GTEST_DIR)/include
 
@@ -49,12 +49,11 @@ CXXFLAGS += --std=c++11 -Wall -fPIC
 MYCFLAGS = #-DENCODING_UTF8 -DCHARSET_SHOW_GBK 
 
 ## 指定C/C++编译器
-CC = gcc
-CXX = g++
+CC := gcc
+CXX := g++
 
 SOURCES := $(foreach d,$(SRCDIRS),$(wildcard $(addprefix $(d)/*, $(SRCEXTS))))
 HEADERS := $(foreach d,$(SRCDIRS),$(wildcard $(addprefix $(d)/*, $(HDREXTS))))
-#TESTSRCS := $(wildcard $(TEST_DIR)/*.c) $(wildcard $(TEST_DIR)/*.cc) $(wildcard $(TEST_DIR)/*.cpp) $(wildcard $(TEST_DIR)/*.cxx)
 
 #$(warning $(SOURCES))
 #$(warning $(HEADERS))
@@ -78,12 +77,12 @@ COMPILE_C := $(CC) $(CFLAGS) $(MYCFLAGS) $(INCPATH)
 COMPILE_CXX := $(CXX) $(CXXFLAGS) $(MYCFLAGS) $(INCPATH)
 
 ifeq ($(SRC_CXX),)
-	LINK = $(CC) $(CFLAGS) $(LDFLAGS) $(MYCFLAGS)
+	LINK := $(CC) $(CFLAGS) $(LDFLAGS) $(MYCFLAGS)
 else
-	LINK = $(CXX) $(CXXFLAGS) $(LDFLAGSk) $(MYCFLAGS)
+	LINK := $(CXX) $(CXXFLAGS) $(LDFLAGS) $(MYCFLAGS)
 endif
 
-ifeq (DEBUG, 1)
+ifeq ($DEBUG, 1)
 	CFLAGS += -g3 -O0
 	CXXFLAGS += -g3 -O0
 else
@@ -152,9 +151,6 @@ $(BIN)/add_person: test/add_person.o $(PROTO_OBJS)
 
 $(BIN)/list_people : test/list_people.o $(PROTO_OBJS)
 	$(LINK) -o $@ $^ $(LIBS)
-
-install:
-	mv -f $(TARGETS) $(BIN)
 
 clean:
 	-rm -f *.o
