@@ -94,7 +94,7 @@ endif
 
 .SUFFIXES:
 
-all: pb $(addprefix $(BIN)/*, $(TARGETS))
+all: pb $(addprefix $(BIN)/, $(TARGETS))
 
 ## 生成所有(.o)文件规则.
 #----------------------------------------

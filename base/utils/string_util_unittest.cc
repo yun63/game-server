@@ -30,7 +30,6 @@ TEST(string_util, join)
 TEST(string_util, ltrim)
 {
     std::string strim = basic_util::ltrim("   hello", " ");
-    std::cout << strim << std::endl;
     EXPECT_EQ(strim, "hello");
 }
 
@@ -42,6 +41,5 @@ TEST(string_util, rtrim)
 TEST(string_util, trim)
 {
     std::string s = basic_util::trim("    hello    ", " ");
-    std::cout << s << std::endl;
     EXPECT_EQ(s, "hello");
 }
