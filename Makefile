@@ -153,7 +153,7 @@ $(BIN)/list_people : test/list_people.o $(PROTO_OBJS)
 	$(LINK) -o $@ $^ $(LIBS)
 
 clean:
-	-rm -f *.o
+	-rm -f $(TEST_DIR)/*.o
 	-rm -f *~ core *.core
 	-rm -rf $(OBJ_DIR) 
 	-rm -f $(TARGETS) 
