@@ -8,6 +8,9 @@
 
 ROOT=$(shell pwd)
 
+## DEBUG开关选项
+DEBUG	:= 1
+
 ## 头文件搜索路径 
 INCPATH ?= -I. -I$(GTEST_DIR)/include -I./protobuf/include
 
@@ -39,6 +42,7 @@ SRCEXTS := .c .cc .cpp .cxx
 ## 头文件类型
 HDREXTS := .h .hh .hpp .hxx 
 
+
 CPPFLAGS += -isystem $(GTEST_DIR)/include
 
 ## C/C++编译器编译选项
@@ -51,6 +55,14 @@ MYCFLAGS = #-DENCODING_UTF8 -DCHARSET_SHOW_GBK
 ## 指定C/C++编译器
 CC := gcc
 CXX := g++
+
+ifeq ($(DEBUG), 1)
+	CFLAGS += -g -O0
+	CXXFLAGS += -g -O0
+else
+	CFLAGS += -O3
+	CXXFLAGS += -O3
+endif
 
 SOURCES := $(foreach d,$(SRCDIRS),$(wildcard $(addprefix $(d)/*, $(SRCEXTS))))
 HEADERS := $(foreach d,$(SRCDIRS),$(wildcard $(addprefix $(d)/*, $(HDREXTS))))
@@ -82,13 +94,6 @@ else
 	LINK := $(CXX) $(CXXFLAGS) $(LDFLAGS) $(MYCFLAGS)
 endif
 
-ifeq ($DEBUG, 1)
-	CFLAGS += -g3 -O0
-	CXXFLAGS += -g3 -O0
-else
-	CFLAGS += -O3
-	CXXFLAGS += -O3
-endif
 
 .PHONY: deps gtest protobuf clean 
 
