@@ -57,11 +57,11 @@ CC := gcc
 CXX := g++
 
 ifeq ($(DEBUG), 1)
-	CFLAGS += -g -O0
-	CXXFLAGS += -g -O0
+	CFLAGS += -g
+	CXXFLAGS += -g
 else
-	CFLAGS += -O3
-	CXXFLAGS += -O3
+	CFLAGS += -O2
+	CXXFLAGS += -O2
 endif
 
 SOURCES := $(foreach d,$(SRCDIRS),$(wildcard $(addprefix $(d)/*, $(SRCEXTS))))
