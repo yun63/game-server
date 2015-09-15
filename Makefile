@@ -32,7 +32,7 @@ GTEST_HEADERS := $(GTEST_DIR)/include/gtest/*.h \
 				$(GTEST_DIR)/include/gtest/internal/*.h 
 GTEST_SRCS_ := $(GTEST_DIR)/src/*.cc $(GTEST_DIR)/src/*.h $(GTEST_HEADERS)
 
-export LD_LIBRARY_PATH+=:./protobuf/lib/
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:./protobuf/lib/
 
 ## 可执行文件名称
 TARGETS ?= cloud add_person list_people
@@ -46,8 +46,8 @@ HDREXTS := .h .hh .hpp .hxx
 CPPFLAGS += -isystem $(GTEST_DIR)/include
 
 ## C/C++编译器编译选项
-CFLAGS += -Wall -fPIC
-CXXFLAGS += --std=c++11 -Wall -fPIC
+CFLAGS += -Wall
+CXXFLAGS += --std=c++11 -Wall
 
 ## 自定义编译选项
 MYCFLAGS = #-DENCODING_UTF8 -DCHARSET_SHOW_GBK 
@@ -143,6 +143,12 @@ protobuf :
 	(cd $(ROOT)/3rd/protobuf-2.6.1 && \
 	 ./configure --prefix=$(ROOT)/protobuf && \
 	 make && make install)
+
+lib/libgtest.so : $(GTEST_DIR)/src/gtest-all.cc
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -fPIC --shared $^ -o $@ -I$(GTEST_DIR) -lpthread
+
+lib/libgtest_main.so : $(GTEST_DIR)/src/gtest-all.cc $(GTEST_DIR)/src/gtest_main.cc
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -fPIC --shared $^ -o $@ -I$(GTEST_DIR) -lpthread
 
 ## 生成目标
 #-------------------------------------
