@@ -70,6 +70,11 @@ inline string join(const vector<string> &tokens,
         }
     }
 
+    if (!tokens.empty()) 
+    {
+        ss += tokens.back();
+    }
+
     return ss;
 }
 

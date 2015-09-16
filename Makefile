@@ -10,6 +10,9 @@ include define.mk
 
 ROOT=$(shell pwd)
 
+## DEBUG开关选项
+DEBUG	:= 1
+
 ## 头文件搜索路径 
 INCPATH ?= -I. -I$(GTEST_DIR)/include -I./protobuf/include
 
@@ -31,35 +34,28 @@ GTEST_HEADERS := $(GTEST_DIR)/include/gtest/*.h \
 				$(GTEST_DIR)/include/gtest/internal/*.h 
 GTEST_SRCS_ := $(GTEST_DIR)/src/*.cc $(GTEST_DIR)/src/*.h $(GTEST_HEADERS)
 
-export LD_LIBRARY_PATH+=:./protobuf/lib/
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:./protobuf/lib/
 
 ## 可执行文件名称
 TARGETS ?= cloud add_person list_people
 
-## 源文件类型
-#SRCEXTS := .c .cc .cpp .cxx 
-
 CPPFLAGS += -isystem $(GTEST_DIR)/include
-
-## C/C++编译器编译选项
-#CFLAGS += -Wall -fPIC
-#CXXFLAGS += --std=c++11 -Wall -fPIC
-
-## 自定义编译选项
-#MYCFLAGS = #-DENCODING_UTF8 -DCHARSET_SHOW_GBK 
-
-## 指定C/C++编译器
-#CC := gcc
-#CXX := g++
 
 SOURCES := \
 	$(foreach e, $(addprefix *, $(SRCEXTS)), $(wildcard $(e))) \
 	$(foreach d, $(SRCDIRS), $(wildcard $(addprefix $(d)/*, $(SRCEXTS)))) 
 
+ifeq ($(DEBUG), 1)
+	CFLAGS += -g
+	CXXFLAGS += -g
+else
+	CFLAGS += -O2
+	CXXFLAGS += -O2
+endif
+
 $(warning $(SOURCES))
 
 OBJECTS := $(addprefix $(OBJ_DIR)/, $(addsuffix .o, $(basename $(SOURCES))))
-#TEST_OBJS := $(addsuffix .o, $(basename $(TESTSRCS)))
 
 PROTO_INC := $(patsubst %.proto, %.pb.h,  $(wildcard base/pb/*.proto))
 PROTO_CXX := $(patsubst %.proto, %.pb.cc, $(wildcard base/pb/*.proto))
@@ -71,12 +67,6 @@ LIBS = -L/usr/local/lib \
 	   -L./lib -lgtest -lgtest_main \
 	   -L./protobuf/lib -lprotobuf \
 	   -lpthread -lz -lm
-
-ifeq ($DEBUG, 1)
-	CXXFLAGS += -g3 -O0
-else
-	CXXFLAGS += -O3
-endif
 
 LINK := $(CXX) $(CXXFLAGS) $(LDFLAGS)
 
@@ -129,12 +119,17 @@ protobuf :
 	 ./configure --prefix=$(ROOT)/protobuf && \
 	 make && make install)
 
+lib/libgtest.so : $(GTEST_DIR)/src/gtest-all.cc
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -fPIC --shared $^ -o $@ -I$(GTEST_DIR) -lpthread
+
+lib/libgtest_main.so : $(GTEST_DIR)/src/gtest-all.cc $(GTEST_DIR)/src/gtest_main.cc
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -fPIC --shared $^ -o $@ -I$(GTEST_DIR) -lpthread
+
 ## 生成目标
 #-------------------------------------
 pb : $(PROTO_CXX)
 
 $(BIN)/cloud : test/test_main.o $(OBJECTS) 
-	@echo $(LINK)
 	$(LINK) -o $@ $^ $(LIBS)
 
 $(BIN)/add_person: test/add_person.o $(PROTO_OBJS)

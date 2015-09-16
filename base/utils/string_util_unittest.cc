@@ -22,9 +22,9 @@
 TEST(string_util, join)
 {
     std::vector<std::string> tokens;
-    tokens.push_back("hello");
-    std::cout << basic_util::join(tokens, "world");
-    EXPECT_EQ(strcmp(basic_util::join(tokens, "world").c_str(), "helloworld"), 0);
+    tokens.push_back("a");
+    tokens.push_back("b");
+    EXPECT_EQ(strcmp(basic_util::join(tokens, "+").c_str(), "a+b"), 0);
 }
 
 TEST(string_util, ltrim)
