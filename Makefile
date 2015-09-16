@@ -6,6 +6,8 @@
 #
 #############################################################################
 
+include define.mk
+
 ROOT=$(shell pwd)
 
 ## 头文件搜索路径 
@@ -35,30 +37,27 @@ export LD_LIBRARY_PATH+=:./protobuf/lib/
 TARGETS ?= cloud add_person list_people
 
 ## 源文件类型
-SRCEXTS := .c .cc .cpp .cxx 
-## 头文件类型
-HDREXTS := .h .hh .hpp .hxx 
+#SRCEXTS := .c .cc .cpp .cxx 
 
 CPPFLAGS += -isystem $(GTEST_DIR)/include
 
 ## C/C++编译器编译选项
-CFLAGS += -Wall -fPIC
-CXXFLAGS += --std=c++11 -Wall -fPIC
+#CFLAGS += -Wall -fPIC
+#CXXFLAGS += --std=c++11 -Wall -fPIC
 
 ## 自定义编译选项
-MYCFLAGS = #-DENCODING_UTF8 -DCHARSET_SHOW_GBK 
+#MYCFLAGS = #-DENCODING_UTF8 -DCHARSET_SHOW_GBK 
 
 ## 指定C/C++编译器
-CC := gcc
-CXX := g++
+#CC := gcc
+#CXX := g++
 
-SOURCES := $(foreach d,$(SRCDIRS),$(wildcard $(addprefix $(d)/*, $(SRCEXTS))))
-HEADERS := $(foreach d,$(SRCDIRS),$(wildcard $(addprefix $(d)/*, $(HDREXTS))))
+SOURCES := \
+	$(foreach e, $(addprefix *, $(SRCEXTS)), $(wildcard $(e))) \
+	$(foreach d, $(SRCDIRS), $(wildcard $(addprefix $(d)/*, $(SRCEXTS)))) 
 
-#$(warning $(SOURCES))
-#$(warning $(HEADERS))
+$(warning $(SOURCES))
 
-SRC_CXX := $(filter-out %.c,$(SOURCES))
 OBJECTS := $(addprefix $(OBJ_DIR)/, $(addsuffix .o, $(basename $(SOURCES))))
 #TEST_OBJS := $(addsuffix .o, $(basename $(TESTSRCS)))
 
@@ -73,22 +72,13 @@ LIBS = -L/usr/local/lib \
 	   -L./protobuf/lib -lprotobuf \
 	   -lpthread -lz -lm
 
-COMPILE_C := $(CC) $(CFLAGS) $(MYCFLAGS) $(INCPATH)
-COMPILE_CXX := $(CXX) $(CXXFLAGS) $(MYCFLAGS) $(INCPATH)
-
-ifeq ($(SRC_CXX),)
-	LINK := $(CC) $(CFLAGS) $(LDFLAGS) $(MYCFLAGS)
-else
-	LINK := $(CXX) $(CXXFLAGS) $(LDFLAGS) $(MYCFLAGS)
-endif
-
 ifeq ($DEBUG, 1)
-	CFLAGS += -g3 -O0
 	CXXFLAGS += -g3 -O0
 else
-	CFLAGS += -O3
 	CXXFLAGS += -O3
 endif
+
+LINK := $(CXX) $(CXXFLAGS) $(LDFLAGS)
 
 .PHONY: deps gtest protobuf clean 
 
@@ -100,28 +90,28 @@ all: pb $(addprefix $(BIN)/, $(TARGETS))
 #----------------------------------------
 $(OBJ_DIR)/%.o:%.c
 	@mkdir -p $(@D)
-	$(COMPILE_C) -c $< -o $@
+	$(CXX) $(CXXFLAGS) $(MYCFLAGS) $(INCPATH) -c $< -o $@
 
 $(OBJ_DIR)/%.o:%.cc
 	@mkdir -p $(@D)
-	$(COMPILE_CXX) -c $< -o $@
+	$(CXX) $(CXXFLAGS) $(MYCFLAGS) $(INCPATH) -c $< -o $@
 
 $(OBJ_DIR)/%.o:%.cpp
 	@mkdir -p $(@D)
-	$(COMPILE_CXX) -c $< -o $@
+	$(CXX) $(CXXFLAGS) $(MYCFLAGS) $(INCPATH) -c $< -o $@
 
 $(OBJ_DIR)/%.o:%.cxx
 	@mkdir -p $(@D)
-	$(COMPILE_CXX) -c $< -o $@
+	$(CXX) $(CXXFLAGS) $(MYCFLAGS) $(INCPATH) -c $< -o $@
 
 %.o:%.c
-	$(COMPILE_C) -c $< -o $@
+	$(CXX) $(CXXFLAGS) $(MYCFLAGS) $(INCPATH) -c $< -o $@
 
-%.o:%.cpp
-	$(COMPILE_CXX) -c $< -o $@
+%.o:%.cpp 
+	$(CXX) $(CXXFLAGS) $(MYCFLAGS) $(INCPATH) -c $< -o $@
 
 %.o:%.cc
-	$(COMPILE_CXX) -c $< -o $@
+	$(CXX) $(CXXFLAGS) $(MYCFLAGS) $(INCPATH) -c $< -o $@
 
 %.pb.cc: %.proto
 	./protobuf/bin/protoc -I=base/pb/ --cpp_out=base/pb/ $<
@@ -144,6 +134,7 @@ protobuf :
 pb : $(PROTO_CXX)
 
 $(BIN)/cloud : test/test_main.o $(OBJECTS) 
+	@echo $(LINK)
 	$(LINK) -o $@ $^ $(LIBS)
 
 $(BIN)/add_person: test/add_person.o $(PROTO_OBJS)
