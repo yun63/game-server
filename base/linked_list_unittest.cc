@@ -14,8 +14,8 @@
 /// 
 /// =====================================================================================
 
-#include "base/basic_types.h"
-#include "base/linked_list.h"
+#include "basic_types.h"
+#include "linked_list.h"
 #include "gtest/gtest.h"
 
 namespace base {
