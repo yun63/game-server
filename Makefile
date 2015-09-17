@@ -53,7 +53,7 @@ else
 	CXXFLAGS += -O2
 endif
 
-$(warning $(SOURCES))
+#$(warning $(SOURCES))
 
 OBJECTS := $(addprefix $(OBJ_DIR)/, $(addsuffix .o, $(basename $(SOURCES))))
 
