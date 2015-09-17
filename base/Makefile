@@ -38,7 +38,7 @@ GTEST_SRCS_ := $(GTEST_DIR)/src/*.cc $(GTEST_DIR)/src/*.h $(GTEST_HEADERS)
 TARGET := libcommon.a
 
 ## 可执行测试程序
-TTEST := Ttest
+TTEST := Test.unittest
 
 CPPFLAGS += -isystem $(GTEST_DIR)/include
 

@@ -8,3 +8,4 @@ base/pb/*.h
 base/pb/*.cc
 object.dir
 .git
+*.unittest
