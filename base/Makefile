@@ -63,7 +63,7 @@ TESTS_OBJS := $(addprefix $(OBJ_DIR)/, $(addsuffix .o, $(basename $(TESTS_CXX)))
 
 ## 库文件
 LIBS = -L/usr/local/lib \
-	   -L../lib -lgtest_main \
+	   -L../lib -lgtest_main -lgtest \
 	   -L../protobuf/lib -lprotobuf \
 	   -lpthread -lz -lm
 
