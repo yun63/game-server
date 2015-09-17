@@ -16,8 +16,8 @@ DEBUG	:= 1
 ## 头文件搜索路径 
 INCPATH ?= -I. -I$(GTEST_DIR)/include -I../protobuf/include
 
-## 源代码目录
-SRCDIRS ?= utils pb
+## 源代码子目录
+SRCDIRS ?= utils
 
 ## 生成目标目录
 OBJ_DIR = object.dir
@@ -49,10 +49,8 @@ SOURCES := \
 TESTS_CXX := $(foreach e, $(addprefix *, $(SRCEXTS)), $(wildcard $(TEST_DIR)/$(e)))
 
 ifeq ($(DEBUG), 1)
-	CFLAGS += -g
 	CXXFLAGS += -g
 else
-	CFLAGS += -O2
 	CXXFLAGS += -O2
 endif
 
@@ -70,7 +68,10 @@ LIBS = -L/usr/local/lib \
 	   -L../protobuf/lib -lprotobuf \
 	   -lpthread -lz -lm
 
-LINK := $(CXX) $(CXXFLAGS) $(LDFLAGS)
+LINK := $(CXX) $(CXXFLAGS)
+
+$(warning $(OBJECTS))
+$(warning $(PROTO_OBJS))
 
 .PHONY: clean 
 
@@ -111,6 +112,9 @@ $(OBJ_DIR)/%.o:%.cxx
 $(TARGET) : $(PROTO_CXX) $(PROTO_OBJS) $(OBJECTS)
 	$(AR) $(ARFLAGS) $@ $(PROTO_OBJS) $(OBJECTS)
 	$(RANLIB) $@
+
+libcommon.so : $(PROTO_OBJS) $(OBJECTS) | $(PROTO_CXX)
+	$(LINK) -fPIC --shared $(PROTO_OBJS) $(OBJECTS) -o $@ $(INCPATH) $(LIBS)
 
 $(TTEST): $(TESTS_OBJS) | libcommon.a
 	$(LINK) -o $@ $^ $(LIBS) -L. -lcommon
