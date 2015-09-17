@@ -14,7 +14,7 @@
 //
 // =====================================================================================
 
-#include "string_util.h"
+#include "../utils/string_util.h"
 
 #include <iostream>
 #include "gtest/gtest.h"

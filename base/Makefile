@@ -26,15 +26,13 @@ OBJ_DIR = object.dir
 BIN = bin
 
 ## 测试代码目录
-TEST_DIR = test
+TEST_DIR = tests
 
 ## GTest测试框架目录
 GTEST_DIR := ../3rd/gtest-1.7.0
 GTEST_HEADERS := $(GTEST_DIR)/include/gtest/*.h \
 				$(GTEST_DIR)/include/gtest/internal/*.h 
 GTEST_SRCS_ := $(GTEST_DIR)/src/*.cc $(GTEST_DIR)/src/*.h $(GTEST_HEADERS)
-
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:./protobuf/lib/
 
 ## 可执行文件名称
 TARGET := libcommon.a
@@ -44,6 +42,8 @@ CPPFLAGS += -isystem $(GTEST_DIR)/include
 SOURCES := \
 	$(foreach e, $(addprefix *, $(SRCEXTS)), $(wildcard $(e))) \
 	$(foreach d, $(SRCDIRS), $(wildcard $(addprefix $(d)/*, $(SRCEXTS)))) 
+
+TESTS_CXX := $(foreach e, $(addprefix *, $(SRCEXTS)), $(wildcard $(TEST_DIR)/$(e)))
 
 ifeq ($(DEBUG), 1)
 	CFLAGS += -g
@@ -59,9 +59,15 @@ PROTO_INC := $(patsubst %.proto, %.pb.h,  $(wildcard pb/*.proto))
 PROTO_CXX := $(patsubst %.proto, %.pb.cc, $(wildcard pb/*.proto))
 PROTO_OBJS := $(addprefix $(OBJ_DIR)/, $(addsuffix .o, $(basename $(PROTO_CXX))))
 
+TESTS_OBJS := $(addprefix $(OBJ_DIR)/, $(addsuffix .o, $(basename $(TESTS_CXX))))
+
+$(warning $(OBJECTS))
+$(warning $(TESTS_CXX))
+$(warning $(TESTS_OBJS))
+
 ## 库文件
 LIBS = -L/usr/local/lib \
-	   -L../lib -lgtest -lgtest_main \
+	   -L../lib -lgtest_main \
 	   -L../protobuf/lib -lprotobuf \
 	   -lpthread -lz -lm
 
@@ -104,14 +110,18 @@ $(OBJ_DIR)/%.o:%.cxx
 	../protobuf/bin/protoc -I=pb/ --cpp_out=pb/ $<
 
 $(TARGET) : $(PROTO_CXX) $(PROTO_OBJS) $(OBJECTS)
-	$(AR) $(ARFLAGS) $@ $?
-	$(RANLIB) $@
+	$(AR) $(ARFLAGS) $@ $? && $(RANLIB) $@
+
+unit_tests : $(TESTS_OBJS) | libcommon.a
+	$(LINK) -o $@ $^ $(LIBS) -L. -lcommon
+
 
 #-------------------------------------
 clean:
 	-rm -f *~ core *.core
 	-rm -rf $(OBJ_DIR) 
-	-rm -f $(TARGET) 
+	-rm -f $(TARGET)
+	-rm -f unit_tests
 
 install:
 	-cp -f $(TARGET) ../lib
