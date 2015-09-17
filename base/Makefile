@@ -109,7 +109,8 @@ $(OBJ_DIR)/%.o:%.cxx
 	../protobuf/bin/protoc -I=pb/ --cpp_out=pb/ $<
 
 $(TARGET) : $(PROTO_CXX) $(PROTO_OBJS) $(OBJECTS)
-	$(AR) $(ARFLAGS) $@ $? && $(RANLIB) $@
+	$(AR) $(ARFLAGS) $@ $(PROTO_OBJS) $(OBJECTS)
+	$(RANLIB) $@
 
 $(TTEST): $(TESTS_OBJS) | libcommon.a
 	$(LINK) -o $@ $^ $(LIBS) -L. -lcommon
