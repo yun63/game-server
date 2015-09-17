@@ -34,8 +34,11 @@ GTEST_HEADERS := $(GTEST_DIR)/include/gtest/*.h \
 				$(GTEST_DIR)/include/gtest/internal/*.h 
 GTEST_SRCS_ := $(GTEST_DIR)/src/*.cc $(GTEST_DIR)/src/*.h $(GTEST_HEADERS)
 
-## 可执行文件名称
+## 可执行目标程序
 TARGET := libcommon.a
+
+## 可执行测试程序
+TTEST := Ttest
 
 CPPFLAGS += -isystem $(GTEST_DIR)/include
 
@@ -108,16 +111,16 @@ $(OBJ_DIR)/%.o:%.cxx
 $(TARGET) : $(PROTO_CXX) $(PROTO_OBJS) $(OBJECTS)
 	$(AR) $(ARFLAGS) $@ $? && $(RANLIB) $@
 
-unit_tests : $(TESTS_OBJS) | libcommon.a
+$(TTEST): $(TESTS_OBJS) | libcommon.a
 	$(LINK) -o $@ $^ $(LIBS) -L. -lcommon
-
+	./$(TTEST)
 
 #-------------------------------------
 clean:
 	-rm -f *~ core *.core
 	-rm -rf $(OBJ_DIR) 
 	-rm -f $(TARGET)
-	-rm -f unit_tests
+	-rm -f $(TTEST)
 
 install:
 	-cp -f $(TARGET) ../lib
