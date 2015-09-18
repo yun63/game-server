@@ -17,7 +17,7 @@ DEBUG	:= 1
 INCPATH ?= -I. -I$(GTEST_DIR)/include -I../protobuf/include
 
 ## 源代码子目录
-SRCDIRS ?= utils tiny
+SRCDIRS := tinyxml utils 
 
 ## 生成目标目录
 OBJ_DIR = object.dir
@@ -62,16 +62,16 @@ PROTO_OBJS := $(addprefix $(OBJ_DIR)/, $(addsuffix .o, $(basename $(PROTO_CXX)))
 
 TESTS_OBJS := $(addprefix $(OBJ_DIR)/, $(addsuffix .o, $(basename $(TESTS_CXX))))
 
+$(warning $(SOURCES))
+$(warning $(OBJECTS))
+
 ## 库文件
 LIBS = -L/usr/local/lib \
 	   -L../lib -lgtest_main -lgtest \
 	   -L../protobuf/lib -lprotobuf \
 	   -lpthread -lz -lm
 
-LINK := $(CXX) $(CXXFLAGS)
-
 .PHONY: clean 
-
 .SUFFIXES:
 
 all: $(TARGETS)
