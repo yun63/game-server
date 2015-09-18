@@ -17,7 +17,7 @@ DEBUG	:= 1
 INCPATH ?= -I. -I$(GTEST_DIR)/include -I../protobuf/include
 
 ## 源代码子目录
-SRCDIRS ?= utils
+SRCDIRS ?= utils tiny
 
 ## 生成目标目录
 OBJ_DIR = object.dir
@@ -35,7 +35,7 @@ GTEST_HEADERS := $(GTEST_DIR)/include/gtest/*.h \
 GTEST_SRCS_ := $(GTEST_DIR)/src/*.cc $(GTEST_DIR)/src/*.h $(GTEST_HEADERS)
 
 ## 可执行目标程序
-TARGET := libcommon.a
+TARGETS := libcommon.a libcommon.so
 
 ## 可执行测试程序
 TTEST := Test.unittest
@@ -70,14 +70,11 @@ LIBS = -L/usr/local/lib \
 
 LINK := $(CXX) $(CXXFLAGS)
 
-$(warning $(OBJECTS))
-$(warning $(PROTO_OBJS))
-
 .PHONY: clean 
 
 .SUFFIXES:
 
-all: $(TARGET)
+all: $(TARGETS)
 
 ## 生成所有(.o)文件规则.
 #----------------------------------------
@@ -109,14 +106,14 @@ $(OBJ_DIR)/%.o:%.cxx
 %.pb.cc: %.proto
 	../protobuf/bin/protoc -I=pb/ --cpp_out=pb/ $<
 
-$(TARGET) : $(PROTO_CXX) $(PROTO_OBJS) $(OBJECTS)
+libcommon.a : $(PROTO_CXX) $(PROTO_OBJS) $(OBJECTS)
 	$(AR) $(ARFLAGS) $@ $(PROTO_OBJS) $(OBJECTS)
 	$(RANLIB) $@
 
 libcommon.so : $(PROTO_OBJS) $(OBJECTS) | $(PROTO_CXX)
 	$(LINK) -fPIC --shared $(PROTO_OBJS) $(OBJECTS) -o $@ $(INCPATH) $(LIBS)
 
-$(TTEST): $(TESTS_OBJS) | libcommon.a
+$(TTEST): $(TESTS_OBJS)
 	$(LINK) -o $@ $^ $(LIBS) -L. -lcommon
 	./$(TTEST)
 
@@ -124,10 +121,10 @@ $(TTEST): $(TESTS_OBJS) | libcommon.a
 clean:
 	-rm -f *~ core *.core
 	-rm -rf $(OBJ_DIR) 
-	-rm -f $(TARGET)
+	-rm -f $(TARGETS)
 	-rm -f $(TTEST)
 
 install:
-	-cp -f $(TARGET) ../lib
+	-cp -f $(TARGETS) ../lib
 
 #############################################################################

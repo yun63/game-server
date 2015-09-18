@@ -1,6 +1,6 @@
 // =====================================================================================
 //
-//       Filename:  string_util_unittest.cc
+//       Filename:  StringUtil_unittest.cc
 //
 //    Description:  
 //
@@ -19,7 +19,7 @@
 #include <iostream>
 #include "gtest/gtest.h"
 
-TEST(string_util, join)
+TEST(StringUtil, join)
 {
     std::vector<std::string> tokens;
     tokens.push_back("a");
@@ -27,18 +27,18 @@ TEST(string_util, join)
     EXPECT_EQ(strcmp(basic_util::join(tokens, "+").c_str(), "a+b"), 0);
 }
 
-TEST(string_util, ltrim)
+TEST(StringUtil, ltrim)
 {
     std::string strim = basic_util::ltrim("   hello", " ");
     EXPECT_EQ(strim, "hello");
 }
 
-TEST(string_util, rtrim)
+TEST(StringUtil, rtrim)
 {
     EXPECT_EQ(basic_util::rtrim("hello    ", " "), "hello");
 }
 
-TEST(string_util, trim)
+TEST(StringUtil, trim)
 {
     std::string s = basic_util::trim("    hello    ", " ");
     EXPECT_EQ(s, "hello");
