@@ -1,6 +1,6 @@
 [submodule "3rd/gtest-1.7.0"]
 	path = 3rd/gtest-1.7.0
-	url = git@github.com:yun63/gtest-1.7.0.git
+	url = https://github.com/yun63/gtest-1.7.0.git
 [submodule "3rd/protobuf-2.6.1"]
 	path = 3rd/protobuf-2.6.1
-	url = git@github.com:yun63/protobuf-2.6.1.git
+	url = https://github.com/yun63/protobuf-2.6.1.git
