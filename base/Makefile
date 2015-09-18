@@ -62,8 +62,8 @@ PROTO_OBJS := $(addprefix $(OBJ_DIR)/, $(addsuffix .o, $(basename $(PROTO_CXX)))
 
 TESTS_OBJS := $(addprefix $(OBJ_DIR)/, $(addsuffix .o, $(basename $(TESTS_CXX))))
 
-$(warning $(SOURCES))
-$(warning $(OBJECTS))
+#$(warning $(SOURCES))
+#$(warning $(OBJECTS))
 
 ## 库文件
 LIBS = -L/usr/local/lib \
