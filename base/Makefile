@@ -115,6 +115,7 @@ libcommon.so : $(PROTO_OBJS) $(OBJECTS) | $(PROTO_CXX)
 
 $(TTEST): $(TESTS_OBJS) | libcommon.a
 	$(LINK) -o $@ $^ $(LIBS) -L. -lcommon
+	./$(TTEST)
 
 #-------------------------------------
 clean:
