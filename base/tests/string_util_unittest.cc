@@ -17,6 +17,7 @@
 #include "../utils/string_util.h"
 
 #include <iostream>
+#include <algorithm>
 #include "gtest/gtest.h"
 
 TEST(StringUtil, join)
@@ -25,6 +26,16 @@ TEST(StringUtil, join)
     tokens.push_back("a");
     tokens.push_back("b");
     EXPECT_EQ(strcmp(basic_util::join(tokens, "+").c_str(), "a+b"), 0);
+}
+
+TEST(StringUtil, split)
+{
+    std::string s = "1-2-3-4-5";
+    std::vector<std::string> tokens = basic_util::split(s, "-");
+    for (size_t i = 0; i < tokens.size(); ++i)
+    {
+        EXPECT_EQ(tokens[i], std::to_string(i + 1));
+    }
 }
 
 TEST(StringUtil, ltrim)

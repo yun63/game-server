@@ -113,9 +113,8 @@ libcommon.a : $(PROTO_CXX) $(PROTO_OBJS) $(OBJECTS)
 libcommon.so : $(PROTO_OBJS) $(OBJECTS) | $(PROTO_CXX)
 	$(LINK) -fPIC --shared $(PROTO_OBJS) $(OBJECTS) -o $@ $(INCPATH) $(LIBS)
 
-$(TTEST): $(TESTS_OBJS)
+$(TTEST): $(TESTS_OBJS) | libcommon.a
 	$(LINK) -o $@ $^ $(LIBS) -L. -lcommon
-	./$(TTEST)
 
 #-------------------------------------
 clean:

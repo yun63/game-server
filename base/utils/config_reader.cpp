@@ -15,6 +15,8 @@
 // =====================================================================================
 
 #include "config_reader.h"
+
+#include <utility>
 #include "string_util.h"
 
 ConfReader::ConfReader(const std::string &filename)
@@ -25,13 +27,20 @@ ConfReader::ConfReader(const std::string &filename)
     for (; i < vec.size(); ++i)
     {
         std::vector<std::string> kv = basic_util::split(vec[i], "=");
-        keypairs_.insert(make_pair(basic_util::trim(kv[0]), basic_util::trim(kv[1])));
+        if (kv.size() == 2)
+        {// only when both of key and value exist, pair is valid
+            keypairs_.insert(make_pair(basic_util::trim(kv[0]), basic_util::trim(kv[1])));
+        }
     }
 }
 
-std::string get(const std::string &key)
+std::string ConfReader::get(const std::string &key)
 {
-    std::string value = "";
+    std::map<std::string, std::string>::const_iterator it = keypairs_.find(key);
+    if (it != keypairs_.end()) 
+    {
+        return it->second;
+    }
 
-    return value;
+    return "";
 }
