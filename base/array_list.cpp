@@ -28,21 +28,6 @@ namespace base {
 
 
 template <typename T>
-void ChangeLength1D(T *&a, int oldlen, int newlen)
-{
-	if (newlen < 0) 
-	{ 
-		throw IllegalParameterValue("new length must be bigger than 0");
-	}
-
-	T *p = new T[newlen];
-	int number = std::min(oldlen, newlen);
-    std::copy(a, a + number, p);
-	delete []a;
-	a = p;
-}
-
-template<typename T>
 ArrayList<T>::ArrayList(int initcapacity)
 {
 	if (initcapacity < 1)
@@ -57,7 +42,7 @@ ArrayList<T>::ArrayList(int initcapacity)
 	elements_ = new T[capacity_];
 }
 
-template<typename T>
+template <typename T>
 ArrayList<T>::ArrayList(const ArrayList<T> &array_list)
 {
 	capacity_ = array_list.capacity_;
@@ -104,6 +89,60 @@ int ArrayList<T>::indexof(const T &elem) const
     }
 
 	return index;
+}
+
+template <typename T>
+void ArrayList<T>::erase(int index)
+{                                                                                                                          
+    // delete the element whose index is 'index'                                                                           
+    // throw CIllegalIndex exception if no such element.                                                                   
+    CheckIndex(index);                                                                                                     
+                                                                                                                           
+    // valid index, shift elements with higher index                                                                       
+    std::copy(elements_ + index + 1, elements_ + size_, elements_ + index);                                                     
+    elements_[--size_].~T(); // invoke destructor
+}                                                                                                                          
+                                                            
+template <typename T>
+void ArrayList<T>::insert(int index, const T &elem)                                                                    
+{                                                                                                                       
+    if (index < 0 || index > size_)
+    {
+        std::ostringstream s;
+        s << "index = " << index << " size = " << size_;
+        throw IllegalIndex(s.str());
+    }
+
+    // valid index, make sure we have space
+    if (size_ == capacity_)
+    {
+        // no space, double capacity
+        T *p = new T[capacity_ << 1];
+        std::copy(elements_, elements_ + capacity_, p);
+        delete []elements_;
+        elements_ = p;
+        capacity_ = capacity_ << 1;
+    }                                                                                                                   
+                                                                                                                        
+    // shift elements right one position                                                                                
+    std::copy_backward(elements_ + index, elements_ + size_, elements_ + size_ + 1);
+    elements_[index] = elem;                                                                                            
+    size_++;                                                                                                            
+}
+
+template <typename T>                                                                                                       
+void ArrayList<T>::output(std::ostream &out) const                                                                          
+{                                                                                                                       
+    std::copy(elements_, elements_ + size_, std::ostream_iterator<T>(cout, " "));
+}                                                                                                                       
+                                                                                                                        
+// overload <<                                                                                                          
+template<class T>                                                                                                       
+std::ostream &operator << (std::ostream &out, const ArrayList<T> &x)
+{
+    x.output(out);
+
+    return out;
 }
 
 
