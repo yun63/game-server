@@ -18,7 +18,7 @@
 #ifndef  __BITS__H_
 #define  __BITS__H_
 
-#include "base/basic_types.h"
+#include "basic_types.h"
 
 namespace base {
 namespace bits {

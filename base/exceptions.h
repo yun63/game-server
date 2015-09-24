@@ -4,14 +4,15 @@
 
 #include <string>
 
-using namespace std;
+using std::cout;
+using std::endl;
+using std::string;
 
-// Illegal parameter value
-
-class CIllegalParameterValue
+// 参数非法异常
+class IllegalParameterValue
 {
 	public:
-		CIllegalParameterValue(string msg = "Illegal parameter value")
+		IllegalParameterValue(string msg = "Illegal parameter value")
 		{ 
 			message_ = msg; 
 		}
@@ -22,11 +23,11 @@ class CIllegalParameterValue
 };
 
 
-// Illegal input data
-class CIllegalInputData
+// 输入异常
+class IllegalInputData
 {
 	public:
-		CIllegalInputData(string msg = "Illegal data input")
+		IllegalInputData(string msg = "Illegal data input")
 		{
 			message_ = msg;
 		}
@@ -35,11 +36,11 @@ class CIllegalInputData
 		string message_;
 };
 
-// Illegal index
-class CIllegalIndex
+// 索引异常
+class IllegalIndex
 {
 	public:
-		CIllegalIndex(string msg = "Illegal index")
+		IllegalIndex(string msg = "Illegal index")
 		{
 			message_ = msg;
 		}
@@ -49,10 +50,10 @@ class CIllegalIndex
 };
 
 // Stack empty
-class CStackEmpty
+class StackEmpty
 {
 	public:
-		CStackEmpty(string msg = "Invalid operation on empty stack")
+		StackEmpty(string msg = "Invalid operation on empty stack")
 		{
 			message_ = msg;
 		}
@@ -62,10 +63,10 @@ class CStackEmpty
 };
 
 // Queue empty
-class CSqueueEmpty
+class QueueEmpty
 {
 	public:
-		CSqueueEmpty(string msg = "Invalid operation on empty stack")
+		QueueEmpty(string msg = "Invalid operation on empty stack")
 		{
 			message_ = msg;
 		}

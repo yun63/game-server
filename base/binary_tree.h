@@ -1,6 +1,6 @@
 /// =====================================================================================
 /// 
-///    @filename         :  binary_tree.h
+///    @filename         :  tree.h
 /// 
 ///    @description      :  二叉树基类定义
 /// 
@@ -20,18 +20,15 @@
 
 #include <iostream>
 #include <functional>
-#include "btnode.h"
+#include "node.h"
 #include "queue.h"
-#include "booster.h"
 #include "exceptions.h"
 
-using namespace std;
-
 template<class T>
-class CBinaryTree
+class TreeBase
 {
 	public:
-		virtual ~CBinaryTree() { }
+		virtual ~Tree() {}
 		/**
 		 * @brief  empty 判断是否为空子树
 		 * @return  
@@ -65,50 +62,48 @@ class CBinaryTree
 };
 
 
-/// ===========================================================================
-///  @class      :  CLinkBinaryTree
-///  @description:  二叉树的链式定义及实现
-/// ===========================================================================
-template<class T>
-class CLinkBinaryTree : public CBinaryTree< CBTNode<T> >
+// 二叉树的定义及实现
+template <class T>
+class BTree : public TreeBase<BTnode<T> >
 {
 	public:
-		CLinkBinaryTree() { root_ = NULL, size_ = 0; }
-		~CLinkBinaryTree() { erase(); }
+		BTree()
+            :root_(NULL), size_(0){}
+		~BTree() { erase(); }
 
 		bool empty() const { return size_ == 0; }
 		int size() const { return size_; }
 		void erase();
 		T *root() const;
-		int height() const { return height(root_); }
+		int GetHeight() const { return GetHeight(root_); }
 
-		void MakeTree(const T &element, CLinkBinaryTree<T> &, CLinkBinaryTree<T> &);
-		CLinkBinaryTree<T> &RemoveLeftSubTree();
-		CLinkBinaryTree<T> &RemoveRightSubTree();
+		void MakeTree(const T &element, BTree<T> &, BTree<T> &);
+		BTree<T> &RemoveLeftSubTree();
+		BTree<T> &RemoveRightSubTree();
 
-		void preorder(void (*visit)(CBTNode<T> *));
-		void inorder(void (*visit)(CBTNode<T> *));
-		void postorder(void (*visit)(CBTNode<T> *));
-		void levelorder(void (*visit)(CBTNode<T> *));
+		void Preorder(void (*visit)(Bnode<T> *));
+		void Inorder(void (*visit)(Bnode<T> *));
+		void Postorder(void (*visit)(Bnode<T> *));
+		void Levelorder(void (*visit)(Bnode<T> *));
 
 		void PreOrderOutput();
 		void InOrderOutput();
 		void PostOrderOutput();
 
 	protected:
-		static void (*visit)(CBTNode<T> *t);
-		static void preorder(CBTNode<T> *t);
-		static void inorder(CBTNode<T> *t);
-		static void postorder(CBTNode<T> *t);
-		static void CountNodes(CBTNode<T> *t);
-		static void dispose(CBTNode<T> *t);
-		static void output(CBTNode<t> *t);
-		static void AddToCount(CBTNode<T> *t);
-		static void height(CBTNode<T> *t);
+		static void (*visit)(Bnode<T> *t);
+		static void Preorder(Bnode<T> *t);
+		static void Inorder(Bnode<T> *t);
+		static void Postorder(Bnode<T> *t);
+		static void CountNodes(Bnode<T> *t);
+		static void Dispose(Bnode<T> *t);
+		static void Output(Bnode<t> *t);
+		static void AddToCount(Bnode<T> *t);
+		static void GetHeight(Bnode<T> *t);
 
 	protected:
 		static int cout_;                       // 用于字树节点计数
-		CBTNode<T> *root_;
+		Bnode<T> *root_;
 		int size_;
 };
 

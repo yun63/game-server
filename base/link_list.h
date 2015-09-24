@@ -27,7 +27,7 @@
 #include <string>
 #include <cassert>
 
-#include "linear_list.h"
+#include "list_base.h"
 #include "link_node.h"
 #include "exceptions.h"
 
