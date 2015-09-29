@@ -33,7 +33,7 @@ template <typename T>
 class ListBase
 {
 	public:
-		virtual ~ListBase() { };
+		virtual ~ListBase() {};
 		/**
 		 * @brief  return true if list is empty
 		 * @return 

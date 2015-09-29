@@ -15,7 +15,7 @@
 /// =====================================================================================
 
 #include "../basic_types.h"
-#include "../linked_list.h"
+#include "../double_linked_list.h"
 #include "gtest/gtest.h"
 
 namespace base {
@@ -45,7 +45,7 @@ class MultipleInheritanceNode : public MultipleInheritanceNodeBase, public LinkN
         MultipleInheritanceNode() {}
 };
 
-void ExpectListContentsForDirection(const LinkedList<Node> &list, 
+void ExpectListContentsForDirection(const DoubleList<Node> &list, 
                                     int num_nodes, 
                                     const int *node_ids, 
                                     bool forward)
@@ -62,7 +62,7 @@ void ExpectListContentsForDirection(const LinkedList<Node> &list,
     EXPECT_EQ(num_nodes, i);
 }
 
-void ExpectListContents(const LinkedList<Node> &list,
+void ExpectListContents(const DoubleList<Node> &list,
                         int num_nodes,
                         const int *node_ids)
 {
@@ -76,17 +76,17 @@ void ExpectListContents(const LinkedList<Node> &list,
     }
 }
 
-TEST(LinkedList, Empty)
+TEST(DoubleList, Empty)
 {
-    LinkedList<Node> list;
+    DoubleList<Node> list;
     EXPECT_EQ(list.end(), list.head());
     EXPECT_EQ(list.end(), list.tail());
     ExpectListContents(list, 0, NULL);
 }
 
-TEST(LinkedList, Append)
+TEST(DoubleList, Append)
 {
-    LinkedList<Node> list;
+    DoubleList<Node> list;
     ExpectListContents(list, 0, NULL);
 
     Node n1(1);
@@ -124,8 +124,8 @@ TEST(LinkedList, Append)
 
 }
 
-TEST(LinkedList, RemoveFromList) {
-    LinkedList<Node> list;
+TEST(DoubleList, RemoveFromList) {
+    DoubleList<Node> list;
 
     Node n1(1);
     Node n2(2);
@@ -199,8 +199,8 @@ TEST(LinkedList, RemoveFromList) {
     }
 }
 
-TEST(LinkedList, InsertBefore) {
-    LinkedList<Node> list;
+TEST(DoubleList, InsertBefore) {
+    DoubleList<Node> list;
 
     Node n1(1);
     Node n2(2);
@@ -236,8 +236,8 @@ TEST(LinkedList, InsertBefore) {
     }
 }
 
-TEST(LinkedList, InsertAfter) {
-    LinkedList<Node> list;
+TEST(DoubleList, InsertAfter) {
+    DoubleList<Node> list;
 
     Node n1(1);
     Node n2(2);
@@ -273,18 +273,18 @@ TEST(LinkedList, InsertAfter) {
     }
 }
 
-TEST(LinkedList, MultipleInheritanceNode) {
+TEST(DoubleList, MultipleInheritanceNode) {
     MultipleInheritanceNode node;
     EXPECT_EQ(&node, node.value());
 }
 
-TEST(LinkedList, EmptyListIsEmpty) {
-    LinkedList<Node> list;
+TEST(DoubleList, EmptyListIsEmpty) {
+    DoubleList<Node> list;
     EXPECT_TRUE(list.empty());
 }
 
-TEST(LinkedList, NonEmptyListIsNotEmpty) {
-    LinkedList<Node> list;
+TEST(DoubleList, NonEmptyListIsNotEmpty) {
+    DoubleList<Node> list;
 
     Node n(1);
     list.Append(&n);
@@ -292,8 +292,8 @@ TEST(LinkedList, NonEmptyListIsNotEmpty) {
     EXPECT_FALSE(list.empty());
 }
 
-TEST(LinkedList, EmptiedListIsEmptyAgain) {
-    LinkedList<Node> list;
+TEST(DoubleList, EmptiedListIsEmptyAgain) {
+    DoubleList<Node> list;
 
     Node n(1);
     list.Append(&n);
@@ -302,9 +302,9 @@ TEST(LinkedList, EmptiedListIsEmptyAgain) {
     EXPECT_TRUE(list.empty());
 }
 
-TEST(LinkedList, NodesCanBeReused) {
-    LinkedList<Node> list1;
-    LinkedList<Node> list2;
+TEST(DoubleList, NodesCanBeReused) {
+    DoubleList<Node> list1;
+    DoubleList<Node> list2;
 
     Node n(1);
     list1.Append(&n);
@@ -314,8 +314,8 @@ TEST(LinkedList, NodesCanBeReused) {
     EXPECT_EQ(list2.head()->value(), &n);
 }
 
-TEST(LinkedList, RemovedNodeHasNullNextPrevious) {
-    LinkedList<Node> list;
+TEST(DoubleList, RemovedNodeHasNullNextPrevious) {
+    DoubleList<Node> list;
 
     Node n(1);
     list.Append(&n);

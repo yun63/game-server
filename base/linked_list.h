@@ -1,157 +1,129 @@
-/// =====================================================================================
-/// 
-///    @filename         :  linked_list.h
-/// 
-///    @description      :  链表的实现
-///
-/// -------------------------------------------------------------------------------------
-///    @version          :  1.0
-///    @created          :  2014年07月21日 11时57分02秒
-///    @revision         :  none
-///    @compiler         :  g++
-///    @author           :  Lei Yunfei (leiyunfei), yunfei_lei@126.com
-///    @Company          :  
-/// 
-///  A. The main reason to use base::LinkedList over std::list isperformance. 
-///    If you don't care about the performance differences
-///    then use an STL container, as it makes for better code readability.
-///
-///    Comparing the performance of base::LinkedList<T> to std::list<T*>:
-///
-///    * Erasing an element of type T* from base::LinkedList<T> is
-///      an O(1) operation. Whereas for std::list<T*> it is O(n).
-///      That is because with std::list<T*> you must obtain an
-///      iterator to the T* element before you can call erase(iterator).
-///
-///    * Insertion operations with base::LinkedList<T> never require
-///      heap allocations.
-///
-/// Q. How does base::LinkedList implementation differ from std::list?
-///
-/// A. Doubly-linked lists are made up of nodes that contain "next" and
-///    "previous" pointers that reference other nodes in the list.
-///
-///    With base::LinkedList<T>, the type being inserted already reserves
-///    space for the "next" and "previous" pointers (base::LinkNode<T>*).
-///    Whereas with std::list<T> the type can be anything, so the implementation
-///    needs to glue on the "next" and "previous" pointers using
-///    some internal node type.
-/// 
-/// =====================================================================================
+// #####################################################################################
+// 
+//    @filename         :  link_list.h
+// 
+//    @description      :  单链表结点及单链表的定义
+//
+//######################################################################################
+//    @version          :  1.0
+//    @created          :  05/26/13 23:16:58
+//    @revision         :  none
+//    @compiler         :  g++
+// 
+//    @author           :  Lei Yunfei (leiyunfei), yunfei_lei@126.com
+//    @Company          :  
+// 
+// #####################################################################################
 
-#ifndef  __LINKED_LIST__H_
-#define  __LINKED_LIST__H_
 
-#include "macros.h"
+#ifndef  H_LINK_LIST_INC
+#define  H_LINK_LIST_INC
+
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <cassert>
+
+#include "list_base.h"
+#include "exceptions.h"
+
+using namespace std;
 
 namespace base {
 
+
 template <typename T>
-class LinkNode
+class LNode
 {
     public:
-        LinkNode() : previous_(NULL), next_(NULL) {}
-        LinkNode(LinkNode<T> *previous, LinkNode<T> *next)
-            : previous_(previous), next_(next) {}
+        LNode() : next_(NULL) {}
+        ~LNode() {}
+        LNode(const T &elem) : element_(elem), next_(NULL) {}
+        LNode(const T &elem, LNode<T> *n) : element_(elem), next_(n){}
 
-        /**
-         * @brief  InsertBefore 在e结点之前插入this结点到链表中
-         * @param  e
-         */
-        void InsertBefore(LinkNode<T> *e)
-        {
-            this->next_ = e;
-            this->previous_ = e->previous_;
-            e->previous_->next_ = this;
-            e->previous_ = this;
-        }
-
-        /**
-         * @brief  InsertAfter 在e结点之后插入this结点到链表中
-         * @param  e
-         */
-        void InsertAfter(LinkNode<T> *e)
-        {
-            this->next_ = e->next_;
-            this->previous_ = e;
-            e->next_->previous_ = this;
-            e->next_ = this;
-        }
-
-        /**
-         * @brief  RemoveFromList 从链表中删除this结点
-         */
-        void RemoveFromList()
-        {
-            this->previous_->next_ = this->next_;
-            this->next_->previous_ = this->previous_;
-            this->next_ = NULL;
-            this->previous_ = NULL;
-        }
-
-        LinkNode<T> *previous() const
-        {
-            return previous_;
-        }
-
-        LinkNode<T> *next() const
-        {
-            return next_;
-        }
-
-        const T *value() const
-        {
-            return static_cast<const T*>(this);
-        }
-
-    private:
-        DISALLOW_COPY_AND_ASSIGN(LinkNode);
-
-        LinkNode<T> *previous_;
-        LinkNode<T> *next_;
+    public:
+        T element_;
+        LNode<T> *next_;
 };
 
 template <typename T>
-class LinkedList
+class LinkList : public ListBase<T>
 {
-    public:
-        LinkedList() : root_(&root_, &root_) {}
+	public:
+		// constructor, copy constructor and destructor
+		LinkList(int initialize_capacity = 10);
+		LinkList(const LinkList<T> &);
+		~LinkList();
 
-        /**
-         * @brief  Append Appends结点e到链表末尾
-         * @param  e
-         */
-        void Append(LinkNode<T> *e)
-        {
-            e->InsertBefore(&root_);
-        }
+		bool empty() const { return size_ == 0; }
+		int size() const { return size_; }
+		T &get(int index) const;
+		int indexof(const T &elem) const;
+		void erase(int index);
+		void insert(int index, const T &elem);
+		void output(ostream &out) const;
+		void Reverse();
+		
+		void BinSort(int range);
+		void BinSort(int range, int (*value)(T &x));
 
-        LinkNode<T> *head() const
-        {
-            return root_.next();
-        }
+		// iterators to start and end of link list
+		class iterator;
+		iterator begin() { return iterator(head_->next_); }
+		iterator end() { return iterator(NULL); }
 
-        LinkNode<T> *tail() const
-        {
-            return root_.previous();
-        }
+		// iterator for LinkList
+		class iterator
+		{
+			public:
+				// typedefs required by C++ for a forward iterator
+				typedef forward_iterator_tag iterator_category;
+				typedef T value_type;
+				typedef ptrdiff_t difference_type;
+				typedef T *pointer;
+				typedef T &reference;
 
-        const LinkNode<T> *end() const
-        {
-            return &root_;
-        }
+				// constructor
+				iterator(LNode<T> *node = NULL) { node_ = node; }
+				
+				// dereferencing operations
+				T &operator *() const { return node_->element_; }
+				T *operator ->() const { return &node_->element_; }
 
-        bool empty() const 
-        {
-            return head() == end();
-        }
+				// increment
+				iterator &operator ++() // preincrement
+				{
+					node_ = node_->next_;
+					return *this;
+				}
+				iterator operator ++(int) // postincrement
+				{
+					iterator old = *this;
+					node_ = node_->next_;
+					return old;
+				}
 
-    private:
-        DISALLOW_COPY_AND_ASSIGN(LinkedList);
+				// equality testing
+				bool operator != (const iterator right) const
+				{
+					return node_ != right.node_;
+				}
+				bool operator == (const iterator right) const
+				{
+					return node_ == right.node_;
+				}
 
-        LinkNode<T> root_;
+			protected:
+				LNode<T> *node_;
+		};
+
+	protected:
+		void CheckIndex(int index) const;
+
+		LNode<T> *head_;                    // pointer to first node in linklist
+		int size_;                              // number of elements in linklist
 };
 
 } // namespace base
 
-#endif   // ----- #ifndef __LINKED_LIST__H_ -----
+#endif   // ----- #ifndef LINK_LIST_INC  -----
