@@ -34,31 +34,31 @@ template<class T>
 class Queue
 {
 	public:
-		virtual ~Queue( ) { }
+		virtual ~Queue() { }
 		/**
 		 * @brief  empty return true if queue is empty.
 		 * @return  
 		 */
-		virtual bool empty( ) const = 0;
+		virtual bool empty() const = 0;
 		/**
 		 * @brief  size return number of elements in queue.
 		 * @return  
 		 */
-		virtual int size( ) const = 0;
+		virtual int size() const = 0;
 		/**
 		 * @brief  &front return reference to the front element.
 		 * @return  
 		 */
-		virtual T &front( ) = 0;
+		virtual T &front() = 0;
 		/**
 		 * @brief  &back return reference to the back element.
 		 * @return  
 		 */
-		virtual T &back( ) = 0;
+		virtual T &back() = 0;
 		/**
 		 * @brief  pop remove the front element in the queue.
 		 */
-		virtual void pop( ) = 0;
+		virtual void pop() = 0;
 		/**
 		 * @brief  push add element at the back of queue.
 		 */
@@ -74,26 +74,26 @@ class Squeue : public Queue<T>
 {
 	public:
 		Squeue(int initialcapacity = 10);
-		~Squeue( ) { delete []queue_; }
+		~Squeue() { delete []queue_; }
 		/**
 		 * @brief  empty 队列判空
 		 * @return  
 		 */
-		bool empty( ) const { return front_ == rear_; }
+		bool empty() const { return front_ == rear_; }
 		/**
 		 * @brief  size 队列的长度
 		 * @return  
 		 */
-		int size( ) const { return (rear_ - front_ + length_) % length_; }
+		int size() const { return (rear_ - front_ + length_) % length_; }
 		/**
 		 * @brief  &front 队头元素
 		 * @return  
 		 */
-		T &front( )
+		T &front()
 		{
-			if (empty( ))
+			if (empty())
 			{
-				throw SqueueEmpty( );
+				throw SqueueEmpty();
 			}
 			return queue_[(front_ + 1) % length_];
 		}
@@ -101,25 +101,25 @@ class Squeue : public Queue<T>
 		 * @brief  &back 队尾元素
 		 * @return  
 		 */
-		T &back( )
+		T &back()
 		{
-			if (empty( ))
+			if (empty())
 			{
-				throw SqueueEmpty( );
+				throw SqueueEmpty();
 			}
 			return queue_[rear_];
 		}
 		/**
 		 * @brief  pop 出队列
 		 */
-		void pop( )
+		void pop()
 		{
-			if (empty( ))
+			if (empty())
 			{
-				throw SqueueEmpty( );
+				throw SqueueEmpty();
 			}
 			front_ = (front_ + 1) % length_;
-			queue_[front_].~T( );
+			queue_[front_].~T();
 		}
 		/**
 		 * @brief  push 如队列
@@ -141,7 +141,7 @@ Squeue<T>::Squeue(int initialcapacity)
 	{
 		ostringstream s;
 		s << "initial capacity " << initialcapacity << " must be bigger than 0";
-		throw CIllegalParameterValue(s.str( ));
+		throw CIllegalParameterValue(s.str());
 	}
 	length_ = initialcapacity;
 	queue_ = new T[length_];
@@ -188,34 +188,34 @@ class LinkedQueue : public Queue< T >
 	public:
 		LinkedQueue(int initialcapacity = 10)
 		{
-			front_ = rear_ = new CLinkNode<T>( ); // 生成头结点
+			front_ = rear_ = new LNode<T>(); // 生成头结点
 			front_->next_ = NULL;
 			size_  = 0;
 		}
-		~LinkedQueue( );
+		~LinkedQueue();
 		/**
 		 * @brief  clear 清空队列
 		 */
-		void clear( );
+		void clear();
 		/**
 		 * @brief  empty 队列判空
 		 * @return  
 		 */
-		bool empty( ) const { return size_ == 0; }
+		bool empty() const { return size_ == 0; }
 		/**
 		 * @brief  size 返回队列长度
 		 * @return  
 		 */
-		int size( ) const { return size_; }
+		int size() const { return size_; }
 		/**
 		 * @brief  &front 返回队头元素引用
 		 * @return  
 		 */
-		T &front( )
+		T &front()
 		{
 			if (size_ == 0)
 			{
-				throw SqueueEmpty( );
+				throw SqueueEmpty();
 			}
 			return front_->next_->element_;     // 滤过头结点
 		}
@@ -223,18 +223,18 @@ class LinkedQueue : public Queue< T >
 		 * @brief  &back 返回队尾元素引用
 		 * @return  
 		 */
-		T &back( )
+		T &back()
 		{
 			if (size_ == 0)
 			{
-				throw SqueueEmpty( );
+				throw SqueueEmpty();
 			}
 			return rear_->element_;
 		}
 		/**
 		 * @brief  pop 出队列
 		 */
-		void pop( );
+		void pop();
 		/**
 		 * @brief  push 如队列
 		 * @param  
@@ -242,13 +242,13 @@ class LinkedQueue : public Queue< T >
 		void push(const T &);
 
 	private:
-		CLinkNode<T> *front_;                   // 队头指针
-		CLinkNode<T> *rear_;                    // 队尾指针 
+		LNode<T> *front_;                   // 队头指针
+		LNode<T> *rear_;                    // 队尾指针 
 		int size_;
 };
 
 template<class T>
-LinkedQueue<T>::~LinkedQueue( )
+LinkedQueue<T>::~LinkedQueue()
 {
 	while (front_ != NULL)
 	{
@@ -259,9 +259,9 @@ LinkedQueue<T>::~LinkedQueue( )
 }
 
 template<class T>
-void LinkedQueue<T>::clear( )
+void LinkedQueue<T>::clear()
 {
-	CLinkNode<T> *p, *q;
+	LNode<T> *p, *q;
 	p = front_->next_;
 	rear_ = front_;
 	while (p)
@@ -273,14 +273,14 @@ void LinkedQueue<T>::clear( )
 }
 
 template<class T>
-void LinkedQueue<T>::pop( )
+void LinkedQueue<T>::pop()
 {
 	if (front_->next_ == NULL)
 	{
-		throw SqueueEmpty( );
+		throw SqueueEmpty();
 	}
 
-	CLinkNode<T> *p = front_->next_;
+	LNode<T> *p = front_->next_;
 	delete front_;
 	front_ = p;
 	size_--;
@@ -289,7 +289,7 @@ void LinkedQueue<T>::pop( )
 template<class T>
 void LinkedQueue<T>::push(const T &elem)
 {
-	CLinkNode<T> *p = new CLinkNode<T>(elem, NULL);
+	LNode<T> *p = new LNode<T>(elem, NULL);
 
 	// 添加新结点到队尾
 	rear_->next_ = p;
