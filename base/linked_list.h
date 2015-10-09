@@ -51,7 +51,7 @@ class LinkList : public ListBase<T>
 {
 	public:
 		// constructor, copy constructor and destructor
-		LinkList(int initialize_capacity = 10);
+		LinkList();
 		LinkList(const LinkList<T> &);
 		~LinkList();
 

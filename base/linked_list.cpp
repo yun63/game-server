@@ -24,15 +24,8 @@ namespace base {
 
 
 template<class T>
-LinkList<T>::LinkList(int initialize_capacity)
+LinkList<T>::LinkList()
 {
-	if (initialize_capacity < 1)
-	{
-		ostringstream s;
-		s << "Initial Capacity = " << initialize_capacity << " must be bigger than 0.";
-		throw IllegalParameterValue(s.str());
-	}
-
 	head_ = new LNode<T>();                // linklist with head node
 	head_->next_ = NULL;
 	size_ = 0;
@@ -80,7 +73,7 @@ void LinkList<T>::CheckIndex(int index) const
 	{
 		ostringstream s;
 		s << "index = " << index << " size = " << size_;
-//		throw CIllegalIndex(s.str());
+		throw IllegalIndex(s.str());
 	}
 }
 
