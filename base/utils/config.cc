@@ -71,23 +71,6 @@ void Trim(std::string& str, const std::string & ChrsToTrim = " \t\n\r", int Trim
 		str = replace_all(str, "\t", "");
 }
 
-//inline void TrimRight(std::string& str, const std::string & ChrsToTrim = " \t\n\r")
-//{
-//    Trim(str, ChrsToTrim, 2);
-//}
-
-//inline void TrimLeft(std::string& str, const std::string & ChrsToTrim = " \t\n\r")
-//{
-//    Trim(str, ChrsToTrim, 1);
-//}
-
-// A function to transform a string to uppercase if neccessary
-//void UCase(std::string& str, bool ucase)
-//{
-//	if(ucase)
-//		transform(str.begin(), str.end(), str.begin(), toupper);
-//}
-
 void Config::set_filename(const string& filename)
 {
     config_name_ = filename;
