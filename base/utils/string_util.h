@@ -166,6 +166,42 @@ inline void write_to_file(const string &content, const string &filepath)
     out.close();
 }
 
+static inline std::string tostring(int64_t num)
+{
+    char buf[32];
+    snprintf(buf, sizeof(buf), "%lld", num);
+
+    return std::string(buf);
+}
+
+static inline std::string tostring(int32_t num)
+{
+    return tostring(static_cast<int64_t>(num));
+}
+
+static inline std::string tostring(double num)
+{
+    char buf[32];
+    snprintf(buf, sizeof(buf), "%.3f", num);
+
+    return std::string(buf);
+}
+
+static inline std::string tohumanstring(int64_t num)
+{
+    static const int kMaxShift = 7;
+    static const char *const kPrefix[kMaxShift] = {" ", " K", " M", " G", " T", " E", " Z"};
+    int shift = 0;
+    double v = num;
+    while ((num >> 10) > 0 && shift < kMaxShift)
+    {
+        v /= 1024;
+        shift++;
+    }
+
+    return tostring(v) + kPrefix[shift];
+}
+
 } // namespace basic_util
 
 #endif
