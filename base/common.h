@@ -44,6 +44,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <deque>
 #include <algorithm>
 
 #endif   // ----- #ifndef __COMMON_H_ -----
