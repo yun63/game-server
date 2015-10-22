@@ -9,3 +9,5 @@ base/pb/*.cc
 object.dir
 .git
 *.unittest
+*.pyc
+.ycm_extra_conf.pyc
