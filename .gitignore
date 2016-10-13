@@ -9,3 +9,4 @@ base/pb/*.cc
 object.dir
 .git
 *.unittest
+*.pyc
