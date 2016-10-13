@@ -149,8 +149,7 @@ inline string tolower(string &str)
     return s;
 }
 
-inline string read_from_file(const string &filepath)
-{
+inline string read_from_file(const string &filepath) {
     std::ifstream in(filepath.c_str());
     string content((std::istreambuf_iterator<char>(in)),
             (std::istreambuf_iterator<char>()));
@@ -159,8 +158,7 @@ inline string read_from_file(const string &filepath)
     return content;
 }
 
-inline void write_to_file(const string &content, const string &filepath)
-{
+inline void write_to_file(const string &content, const string &filepath) {
     std::ofstream out(filepath.c_str());
     out << content;
     out.close();
