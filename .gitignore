@@ -10,3 +10,5 @@ object.dir
 .git
 *.unittest
 *.pyc
+.ycm_extra_conf.py
+base/test.ini
