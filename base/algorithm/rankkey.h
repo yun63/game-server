@@ -18,8 +18,33 @@
 #ifndef  RANKKEY_INC
 #define  RANKKEY_INC
 
-struct RankData {
+#include <string>
 
+struct RankData {
+    int id;
+    int time;
+    int values;
+};
+
+struct RankPlayerLevel {
+    int id;
+    std::string name;
+    int time;
+    int power;
+}
+
+class RankDataKey {
+public:
+    int operator()(RankData *aidata) const {
+        return aidata->id;
+    }
+};
+
+class RankPlayerLevelKey {
+public:
+    int operator()(RankPlayerLevel *aidata) const {
+        return aidata->power;
+    }
 };
 
 #endif   // ----- #ifndef RANKKEY_INC  -----
