@@ -42,8 +42,8 @@ public:
     RankList(int *aivec, int size);
     RankList(int rank_size, int rank_page_size);
     ~RankList();
-    // 检查key是否在榜
-    bool check(Key k);
+    // key是否在榜
+    bool IsOn(Key k);
     // 将数据提交到排行榜
     void Commit(const T &item);
     // 查找关键字Key所在的排名 0表示未上榜
@@ -93,5 +93,7 @@ private:
     unsigned int rank_page_num_;           // 需要保存的页数
     std::vector<int> page_size_vect_;;
 };
+
+#include "rankkey.h"
 
 #endif   // ----- #ifndef RANKLIST_INC  -----
