@@ -78,8 +78,7 @@ template <typename T,
           typename GetKeyFunc,
           typename CompareFunc>
 void RankList<T, Key, GetKeyFunc, CompareFunc>::Commit(const T &item) {
-    if (false == this->IsOn(get_key_func_(item))) {
+    if (false == IsOn(get_key_func_(item))) {
         return;
     }
-
 }
