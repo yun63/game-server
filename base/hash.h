@@ -27,8 +27,9 @@
 #include <string>
 #include <utility>
 
-extern "C"
-uint32_t SuperFastHash(const char *data, int len);
+extern "C" {
+    uint32_t SuperFastHash(const char *data, int len);
+}
 
 namespace base {
 
