@@ -80,7 +80,7 @@ all: $(TARGETS)
 #----------------------------------------
 $(OBJ_DIR)/%.o:%.c
 	@mkdir -p $(@D)
-	$(CXX) $(CXXFLAGS) $(MYCFLAGS) $(INCPATH) -c $< -o $@
+	$(CC) $(CFLAGS) $(MYCFLAGS) $(INCPATH) -c $< -o $@
 
 $(OBJ_DIR)/%.o:%.cc
 	@mkdir -p $(@D)
