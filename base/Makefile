@@ -38,7 +38,7 @@ GTEST_SRCS_ := $(GTEST_DIR)/src/*.cc $(GTEST_DIR)/src/*.h $(GTEST_HEADERS)
 TARGETS := libcommon.a libcommon.so
 
 ## 可执行测试程序
-TTEST := Test.unittest
+TTEST := Test
 
 CPPFLAGS += -isystem $(GTEST_DIR)/include
 
@@ -69,7 +69,7 @@ TESTS_OBJS := $(addprefix $(OBJ_DIR)/, $(addsuffix .o, $(basename $(TESTS_CXX)))
 LIBS = -L/usr/local/lib \
 	   -L../lib -lgtest_main -lgtest \
 	   -L../protobuf/lib -lprotobuf \
-	   -lpthread -lz -lm
+	   -lpthread -lm
 
 .PHONY: clean 
 .SUFFIXES:
