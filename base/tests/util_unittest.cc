@@ -24,4 +24,11 @@
 
 TEST(RandomTest, SameMinAndMax) {
     EXPECT_EQ(base::rand(0, 0), 0);
+    EXPECT_EQ(base::rand(100, 100), 100);
+    EXPECT_EQ(base::rand(kuint32max, kuint32max), kuint32max);
+}
+
+TEST(RandomTest, Between) {
+    EXPECT_GT(200, base::rand(100, 200));
+    EXPECT_LT(100, base::rand(100, 200));
 }
