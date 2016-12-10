@@ -21,15 +21,15 @@
 
 ConfReader::ConfReader(const std::string &filename)
 {
-    std::string content = basic_util::read_from_file(filename);
-    std::vector<std::string> vec = basic_util::split(content, "\n");
+    std::string content = base::read_from_file(filename);
+    std::vector<std::string> vec = base::split(content, "\n");
     std::vector<std::string>::size_type i = 0;
     for (; i < vec.size(); ++i)
     {
-        std::vector<std::string> kv = basic_util::split(vec[i], "=");
+        std::vector<std::string> kv = base::split(vec[i], "=");
         if (kv.size() == 2)
         {// only when both of key and value exist, pair is valid
-            keypairs_.insert(make_pair(basic_util::trim(kv[0]), basic_util::trim(kv[1])));
+            keypairs_.insert(make_pair(base::trim(kv[0]), base::trim(kv[1])));
         }
     }
 }
