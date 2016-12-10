@@ -19,6 +19,8 @@ INCPATH ?= -I. -I$(GTEST_DIR)/include -I./protobuf/include
 ## 源代码目录
 SRCDIRS ?= base base/utils src src/test 
 
+LIB_PATH ?= lib
+
 ## 生成目标目录
 OBJ_DIR = object.dir
 
@@ -109,21 +111,25 @@ $(OBJ_DIR)/%.o:%.cxx
 ## 依赖
 deps : gtest protobuf
 
-gtest :
+gtest : | $(LIB_PATH)
 	(cd $(ROOT)/3rd/gtest-1.7.0 && mkdir -p build && \
 	 cd build && cmake .. && make && \
 	 cp -f libgtest.a libgtest_main.a $(ROOT)/lib)
 
-protobuf :
+protobuf : | $(LIB_PATH)
 	(cd $(ROOT)/3rd/protobuf-2.6.1 && \
 	 ./configure --prefix=$(ROOT)/protobuf && \
 	 make && make install)
 
-lib/libgtest.so : $(GTEST_DIR)/src/gtest-all.cc
+
+$(LIB)/libgtest.so : $(GTEST_DIR)/src/gtest-all.cc | $(LIB_PATH)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -fPIC --shared $^ -o $@ -I$(GTEST_DIR) -lpthread
 
-lib/libgtest_main.so : $(GTEST_DIR)/src/gtest-all.cc $(GTEST_DIR)/src/gtest_main.cc
+$(LIB)/libgtest_main.so : $(GTEST_DIR)/src/gtest-all.cc $(GTEST_DIR)/src/gtest_main.cc | $(LIB_PATH)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -fPIC --shared $^ -o $@ -I$(GTEST_DIR) -lpthread
+
+$(LIB_PATH) :
+	mkdir $(LIB_PATH)
 
 ## 生成目标
 #-------------------------------------
