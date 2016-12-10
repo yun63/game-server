@@ -115,7 +115,6 @@ $(OBJ_DIR)/%.o:%.cxx
 
 $(TTEST): $(TESTS_OBJS)
 	$(LINK) -o $@ $^ $(LIBS) -L../lib -lcommon
-	./$(TTEST)
 
 #-------------------------------------
 clean:

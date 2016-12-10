@@ -43,7 +43,7 @@ public:
      *
      * @param seed
      */
-    void set_seed(uint32_t seed) {
+    static void set_seed(uint32_t seed) {
         seed_ = seed;
     }
 

@@ -20,40 +20,73 @@
 #ifndef  UTILS_INC
 #define  UTILS_INC
 
-#include "../basic_types.h"
+#include <string>
 #include "random.h"
+
 
 namespace base {
 
 
-#define Pi                  3.1415926535897932384626433832795;
-#define ARRAY_CNT(a)        (sizeof(a) / sizeof(a[0]))
-#define RAND(x)             ( (int)( (x) * ( rank() / (RAND_MAX+1.0f) ) ) )
-#define RAND_BETWEEN(x, y)  ( (x) + RAND( abs(y - x) ) )
-
 /**
  * Return a float random inside the internal [0, mod]
  */
-inline float frand(float mod)
-{
+inline float frand(float mod) {
     double r = static_cast<double>(rand());
     r /= static_cast<double>(RAND_MAX);
     return static_cast<float>(r * mod);
 }
 
+/**
+ * Return a random between [0, kuint32max)
+ *
+ */
 uint32_t rand() {
-    Random rand;
+    base::Random rand;
     return rand.Generate();
 }
 
+/**
+ * @brief Return a random between [0, limit)
+ *
+ * @param limit
+ *
+ * @return  random number
+ */
+uint32_t rand(uint32_t limit) {
+    if (limit == 0) {
+        return 0;
+    }
+
+    base::Random rand(limit);
+    return rand.Generate();
+}
+
+
+/**
+ * @brief Return a number between[a, b) if a < b or between [b, a) if a > b
+ *
+ * @param a
+ * @param b
+ *
+ * @return random number between a and b
+ */
+uint32_t rand(uint32_t a, uint32_t b) {
+    if (a == b) {
+        return a;
+    }
+
+    base::Random rand(::abs(a - b));
+    return std::min(a, b) + rand.Generate();
+}
+
 void srand(uint32_t seed) {
-    Random rand;
+    base::Random rand;
     rand.set_seed(seed);
 }
 
 void set_random_limit(uint32_t limit) {
-    Random rand;
-    rand.set_upper_limit(limit);
+    base::Random rand;
+    rand.set_upper_limit(limit + 1);
 }
 
 /**
@@ -120,8 +153,7 @@ std::string toupper(const std::string &str);
 void toupper(char *str);
 
 template<typename T> 
-T trim(const T &str)
-{
+T trim(const T &str) {
     typename T::size_type start = 0;
     const typename T::size_type size = str.size();
     while (start < size && str[start] <= 32) start++;
@@ -135,8 +167,7 @@ T trim(const T &str)
  * Remove spaces at the end of the string
  */
 template<typename T>
-T trim_right_spaces(const T &str)
-{
+T trim_right_spaces(const T &str) {
     typename T::size_type end = str.size();
     while (end > 0 && str[end - 1] == ' ') end--;
     return str.substr(0, end);
@@ -146,45 +177,38 @@ T trim_right_spaces(const T &str)
  * Remove spaces at the beginning of the string
  */
 template<typename T>
-T trim_left_spaces(const T &str)
-{
+T trim_left_spaces(const T &str) {
     typename T::size_type start = 0;
     typename T::size_type end = str.size();
     while (str[start] == ' ') start++;
-    return str.substr(start, end - 1)
+    return str.substr(start, end - 1);
 }
 
-inline std::string &strlwr(std::string &str)
-{
+inline std::string &strlwr(std::string &str) {
     str = tolower(str);
     return str;
 }
 
 
-inline std::string strlwr(const std::string &str)
-{
+inline std::string strlwr(const std::string &str) {
     return tolower(str);
 }
 
-inline char *strlwr(char *str)
-{
+inline char *strlwr(char *str) {
     tolower(str);
     return str;
 }
 
-inline std::string &strupr(std::string &str)
-{
+inline std::string &strupr(std::string &str) {
     str = toupper(str);
     return str;
 }
 
-inline strupr(const std::string &str)
-{
+inline std::string strupr(const std::string &str) {
     return toupper(str);
 }
 
-inline char *strupr(char *str)
-{
+inline char *strupr(char *str) {
     toupper(str);
     return str;
 }
@@ -206,7 +230,7 @@ std::string bytes_to_humanreadable(uint64 bytes);
 
 std::string seconds_to_humanreadable(uint32 time);
 
-
 } // namespace base
+
 
 #endif   // ----- #ifndef UTILS_INC  -----

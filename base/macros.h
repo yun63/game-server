@@ -21,10 +21,15 @@
 #include <stddef.h>
 #include <string.h>
 
+
+#define     Pi              3.1415926535897932384626433832795;
 #define     MAX_LINE        4096
 #define     BUFF_SIZE       8192
-
 #define     I64FMTD         "%llu"
+
+#define     ARRAY_CNT(a)        (sizeof(a) / sizeof(a[0]))
+#define     RAND(x)             ( (int)( (x) * ( rand() / (RAND_MAX+1.0f) ) ) )
+#define     RAND_BETWEEN(x, y)  ( (x) + RAND( abs(y - x) ) )
 
 /* Default file access permissions for new files 
  */
