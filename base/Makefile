@@ -17,7 +17,7 @@ DEBUG	:= 1
 INCPATH ?= -I. -I$(GTEST_DIR)/include -I../protobuf/include
 
 ## 源代码子目录
-SRCDIRS := tinyxml utils 
+SRCDIRS := thread tinyxml utils 
 
 ## 生成目标目录
 OBJ_DIR = object.dir
@@ -35,7 +35,7 @@ GTEST_HEADERS := $(GTEST_DIR)/include/gtest/*.h \
 GTEST_SRCS_ := $(GTEST_DIR)/src/*.cc $(GTEST_DIR)/src/*.h $(GTEST_HEADERS)
 
 ## 可执行目标程序
-TARGETS := libcommon.a libcommon.so
+TARGETS := ../lib/libcommon.a ../lib/libcommon.so
 
 ## 可执行测试程序
 TTEST := Test
@@ -106,11 +106,11 @@ $(OBJ_DIR)/%.o:%.cxx
 %.pb.cc: %.proto
 	../protobuf/bin/protoc -I=pb/ --cpp_out=pb/ $<
 
-libcommon.a : $(PROTO_CXX) $(PROTO_OBJS) $(OBJECTS)
+../lib/libcommon.a : $(PROTO_CXX) $(PROTO_OBJS) $(OBJECTS)
 	$(AR) $(ARFLAGS) $@ $(PROTO_OBJS) $(OBJECTS)
 	$(RANLIB) $@
 
-libcommon.so : $(PROTO_OBJS) $(OBJECTS) | $(PROTO_CXX)
+../lib/libcommon.so : $(PROTO_OBJS) $(OBJECTS) | $(PROTO_CXX)
 	$(LINK) -fPIC --shared $(PROTO_OBJS) $(OBJECTS) -o $@ $(INCPATH) $(LIBS)
 
 $(TTEST): $(TESTS_OBJS)
