@@ -23,6 +23,6 @@
 void init_bitmap(uint32_t *bitmap, uint32_t cap);
 void set(uint32_t *bitmap, uint32_t k);
 void clr(uint32_t *bitmap,, uint32_t k);
-void test(uint32_t *bitmap, uint32_t k);
+bool test(uint32_t *bitmap, uint32_t k);
 
 #endif   // ----- #ifndef BITMAP_SORT_INC  -----
