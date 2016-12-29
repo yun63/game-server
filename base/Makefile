@@ -35,7 +35,7 @@ GTEST_HEADERS := $(GTEST_DIR)/include/gtest/*.h \
 GTEST_SRCS_ := $(GTEST_DIR)/src/*.cc $(GTEST_DIR)/src/*.h $(GTEST_HEADERS)
 
 ## 可执行目标程序
-TARGETS := ../lib/libcommon.a ../lib/libcommon.so
+TARGETS := ../lib/libcommon.a ../lib/libcommon.so ../lib/libtinyxml.so
 
 ## 可执行测试程序
 TTEST := Test
@@ -112,6 +112,9 @@ $(OBJ_DIR)/%.o:%.cxx
 
 ../lib/libcommon.so : $(PROTO_OBJS) $(OBJECTS) | $(PROTO_CXX)
 	$(LINK) -fPIC --shared $(PROTO_OBJS) $(OBJECTS) -o $@ $(INCPATH) $(LIBS)
+
+../lib/libtinyxml.so : ./tinyxml/tinystr.cpp ./tinyxml/tinyxml.cpp ./tinyxml/tinyxmlerror.cpp ./tinyxml/tinyxmlparser.cpp
+	$(CXX) $(CXXFLAGS) -fPIC --shared $^ -o $@ -Itinyxml
 
 $(TTEST): $(TESTS_OBJS)
 	$(LINK) -o $@ $^ $(LIBS) -L../lib -lcommon

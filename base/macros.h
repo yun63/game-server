@@ -32,8 +32,6 @@
  */
 #define DIR_MODE	(FILE_MODE | S_IXUSR | S_IXGRP | S_IXOTH)
 
-//#include "compiler_specific.h"
-
 // Put this in the private:declarations for a class to be uncopyable.
 #define DISALLOW_COPY(TypeName) \
     TypeName(const TypeName &)

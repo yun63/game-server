@@ -11,4 +11,7 @@ object.dir
 *.unittest
 *.pyc
 .ycm_extra_conf.py
+<<<<<<< HEAD
 base/test.ini
+=======
+>>>>>>> 5494f29293e53df3b41f54057581d2ecffb291a3

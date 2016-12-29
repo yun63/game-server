@@ -54,3 +54,47 @@ TEST(StringUtil, trim)
     std::string s = basic_util::trim("    hello    ", " ");
     EXPECT_EQ(s, "hello");
 }
+
+TEST(StringUtil, to_string_int32)
+{
+    int n32 = 128;
+    EXPECT_EQ(basic_util::to_string(n32), "128");
+    n32 = 0;
+    EXPECT_EQ(basic_util::to_string(n32), "0");
+    n32 = -123;
+    EXPECT_EQ(basic_util::to_string(n32), "-123");
+}
+
+TEST(StringUtil, to_string_int64)
+{
+    int64_t n64 = 4300000003;
+    EXPECT_EQ(basic_util::to_string(n64), "4300000003");
+    n64 = -4300000003;
+    EXPECT_EQ(basic_util::to_string(n64), "-4300000003");
+    n64 = 0;
+    EXPECT_EQ(basic_util::to_string(n64), "0");
+}
+
+TEST(StringUtil, to_string_double)
+{
+    double d = 123.456;
+    EXPECT_EQ(basic_util::to_string(d), "123.456");
+    d = -123.456;
+    EXPECT_EQ(basic_util::to_string(d), "-123.456");
+    d = 123.456789;
+    EXPECT_EQ(basic_util::to_string(d), "123.457");
+    d = -123.456789;
+    EXPECT_EQ(basic_util::to_string(d), "-123.457");
+}
+
+TEST(StringUtil, to_human_readable_string)
+{
+    uint64_t n = 1024;
+    EXPECT_EQ(basic_util::to_human_readable_string(n), "1.000K");
+
+    n *= 1024;
+    EXPECT_EQ(basic_util::to_human_readable_string(n), "1.000M");
+
+    n *= 1024;
+    EXPECT_EQ(basic_util::to_human_readable_string(n), "1.000G");
+}
