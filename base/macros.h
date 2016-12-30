@@ -24,6 +24,8 @@
 #define     MAX_LINE        4096
 #define     BUFF_SIZE       8192
 
+#define     I64FMTD         "%llu"
+
 /* Default file access permissions for new files 
  */
 #define FILE_MODE	(S_IRUSR | S_IWUSE | S_IRGRP | S_IROTH)
