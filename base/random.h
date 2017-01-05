@@ -27,16 +27,18 @@ namespace base {
 
 class Random : public noncopyable {
 public:
-    explicit Random(uint32_t seed) : state_(seed) {}
-
-    void Reseed(u_int32_t seed) {
-        state_ = seed;
+    explicit Random(uint32_t upper = kint32max) {
+        upper_limit_ = upper;
     }
 
-    uint32_t Generate(uint32_t range) {
-        state_ = (1103515245U*state_ + 12345U) % kuint32max;
-        return state_ % range;
+    uint32_t Generate() const;
+
+    void set_seed(uint32_t seed) {
+        seed_ = seed;
     }
+
+private:
+    void set_upper_limit(uint32_t)
 
 private:
     /* data */

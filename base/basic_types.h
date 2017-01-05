@@ -21,6 +21,7 @@
 #define _BASICTYPES_H_
 
 #include <stdint.h>
+#include <stddef.h>
 #include <sys/types.h>
 
 typedef int8_t              int8;
