@@ -8,7 +8,7 @@
 #include <string>
 #include <algorithm>
 
-namespace basic_util {
+namespace base {
 
 using std::vector;
 using std::string;
@@ -164,6 +164,6 @@ inline void write_to_file(const string &content, const string &filepath) {
     out.close();
 }
 
-} // namespace basic_util
+} // namespace base
 
 #endif

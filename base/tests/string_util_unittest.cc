@@ -25,13 +25,13 @@ TEST(StringUtil, join)
     std::vector<std::string> tokens;
     tokens.push_back("a");
     tokens.push_back("b");
-    EXPECT_EQ(strcmp(basic_util::join(tokens, "+").c_str(), "a+b"), 0);
+    EXPECT_EQ(strcmp(base::join(tokens, "+").c_str(), "a+b"), 0);
 }
 
 TEST(StringUtil, split)
 {
     std::string s = "1-2-3-4-5";
-    std::vector<std::string> tokens = basic_util::split(s, "-");
+    std::vector<std::string> tokens = base::split(s, "-");
     for (size_t i = 0; i < tokens.size(); ++i)
     {
         EXPECT_EQ(tokens[i], std::to_string(i + 1));
@@ -40,17 +40,17 @@ TEST(StringUtil, split)
 
 TEST(StringUtil, ltrim)
 {
-    std::string strim = basic_util::ltrim("   hello", " ");
+    std::string strim = base::ltrim("   hello", " ");
     EXPECT_EQ(strim, "hello");
 }
 
 TEST(StringUtil, rtrim)
 {
-    EXPECT_EQ(basic_util::rtrim("hello    ", " "), "hello");
+    EXPECT_EQ(base::rtrim("hello    ", " "), "hello");
 }
 
 TEST(StringUtil, trim)
 {
-    std::string s = basic_util::trim("    hello    ", " ");
+    std::string s = base::trim("    hello    ", " ");
     EXPECT_EQ(s, "hello");
 }
