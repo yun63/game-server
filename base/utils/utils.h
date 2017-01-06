@@ -20,7 +20,8 @@
 #ifndef  UTILS_INC
 #define  UTILS_INC
 
-namespace "../basic_types.h"
+#include "../basic_types.h"
+#include "random.h"
 
 namespace base {
 
@@ -38,6 +39,21 @@ inline float frand(float mod)
     double r = static_cast<double>(rand());
     r /= static_cast<double>(RAND_MAX);
     return static_cast<float>(r * mod);
+}
+
+uint32_t rand() {
+    Random rand;
+    return rand.Generate();
+}
+
+void srand(uint32_t seed) {
+    Random rand;
+    rand.set_seed(seed);
+}
+
+void set_random_limit(uint32_t limit) {
+    Random rand;
+    rand.set_upper_limit(limit);
 }
 
 /**

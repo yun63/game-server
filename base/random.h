@@ -31,19 +31,53 @@ public:
         upper_limit_ = upper;
     }
 
+    /**
+     * @brief 生成随机数
+     *
+     * @return 
+     */
     uint32_t Generate() const;
 
+    /**
+     * @brief 设置随机数种子
+     *
+     * @param seed
+     */
     void set_seed(uint32_t seed) {
         seed_ = seed;
     }
 
-private:
-    void set_upper_limit(uint32_t)
+    void set_upper_limit(uint32_t max) {
+        upper_limit_ = max;
+    }
 
 private:
     /* data */
-    uint32_t    state_;
+    static uint32_t seed_;
+    static const uint32_t A = 48271;
+    static const uint32_t M = 2147483647;
+    static uint32_t upper_limit_;
 };
+
+const uint32_t Random::A;
+const uint32_t Random::M;
+
+uint32_t Random::seed_ = 1;
+uint32_t Random::upper_limit_ = Random::M;
+
+uint32_t Random::Generate() const {
+    uint32_t Q = M / A;
+    uint32_t R = M % A;
+    uint32_t T = A * (Random::seed_ % Q) - R * (Random::seed_ / Q);
+    if (T >= 0) {
+        Random::seed_ = T;
+    } else {
+        Random::seed_ = T + M;
+    }
+
+    return Random::seed_ % Random::upper_limit_;
+}
+
 
 } // namespace base
 
