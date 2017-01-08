@@ -66,13 +66,13 @@ uint32_t Random::seed_ = 1;
 uint32_t Random::upper_limit_ = Random::M;
 
 uint32_t Random::Generate() const {
-    uint32_t Q = M / A;
-    uint32_t R = M % A;
-    uint32_t T = A * (Random::seed_ % Q) - R * (Random::seed_ / Q);
+    int Q = static_cast<int>(M / A);
+    int R = static_cast<int>(M % A);
+    int T = static_cast<int>(A * (Random::seed_ % Q) - R * (Random::seed_ / Q));
     if (T >= 0) {
-        Random::seed_ = T;
+        Random::seed_ = static_cast<uint32_t>(T);
     } else {
-        Random::seed_ = T + M;
+        Random::seed_ = static_cast<uint32_t>(T + M);
     }
 
     return Random::seed_ % Random::upper_limit_;

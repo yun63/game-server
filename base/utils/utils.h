@@ -21,6 +21,7 @@
 #define  UTILS_INC
 
 #include <string>
+#include <cstdlib>
 #include "random.h"
 
 
