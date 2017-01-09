@@ -116,6 +116,9 @@ $(OBJ_DIR)/%.o:%.cxx
 $(TTEST): $(TESTS_OBJS)
 	$(LINK) -o $@ $^ $(LIBS) -L../lib -lcommon
 
+game-server : tests/main.o $(OBJECTS)
+	$(LINK) -o $@ $^ $(LIBS) -L../lib -lcommon
+
 #-------------------------------------
 clean:
 	-rm -f *~ core *.core

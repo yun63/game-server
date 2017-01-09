@@ -20,8 +20,12 @@
 #ifndef  UTILS_INC
 #define  UTILS_INC
 
+#include <iostream>
+#include <vector>
 #include <string>
 #include <cstdlib>
+#include <utility>
+
 #include "random.h"
 
 
@@ -38,11 +42,11 @@ inline float frand(float mod) {
 }
 
 /**
- * Return a random between [0, kuint32max)
+ * Return a random between [0, 10000)
  *
  */
 uint32_t rand() {
-    base::Random rand;
+    base::Random rand(10000);
     return rand.Generate();
 }
 
@@ -80,6 +84,11 @@ uint32_t rand(uint32_t a, uint32_t b) {
     return std::min(a, b) + rand.Generate();
 }
 
+/**
+ * @brief Set random seed
+ *
+ * @param seed
+ */
 void srand(uint32_t seed) {
     base::Random rand;
     rand.set_seed(seed);
@@ -88,6 +97,26 @@ void srand(uint32_t seed) {
 void set_random_limit(uint32_t limit) {
     base::Random rand;
     rand.set_upper_limit(limit + 1);
+}
+
+int weighted_random(std::vector<std::pair<int, int>> pool) {
+    int sum = 0;
+    for (size_t i = 0; i < pool.size(); i++) {
+        sum += pool[i].second;
+    }
+
+    int rbase = base::rand(sum);
+    std::cout << rbase << std::endl;
+    int cur = 0;
+
+    for (auto it = pool.begin(); it != pool.end(); it++) {
+        if (rbase > cur && rbase <= cur + it->second) {
+            return it->first;
+        }
+        cur += it->second;
+    }
+
+    return 0;
 }
 
 /**
