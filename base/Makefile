@@ -55,11 +55,9 @@ else
 endif
 
 OBJECTS := $(addprefix $(OBJ_DIR)/, $(addsuffix .o, $(basename $(SOURCES))))
-
 PROTO_INC := $(patsubst %.proto, %.pb.h,  $(wildcard pb/*.proto))
 PROTO_CXX := $(patsubst %.proto, %.pb.cc, $(wildcard pb/*.proto))
 PROTO_OBJS := $(addprefix $(OBJ_DIR)/, $(addsuffix .o, $(basename $(PROTO_CXX))))
-
 TESTS_OBJS := $(addprefix $(OBJ_DIR)/, $(addsuffix .o, $(basename $(TESTS_CXX))))
 
 #$(warning $(SOURCES))
@@ -116,7 +114,7 @@ $(OBJ_DIR)/%.o:%.cxx
 $(TTEST): $(TESTS_OBJS)
 	$(LINK) -o $@ $^ $(LIBS) -L../lib -lcommon
 
-game-server : tests/main.o $(OBJECTS)
+game-server : $(OBJ_DIR)/main.o
 	$(LINK) -o $@ $^ $(LIBS) -L../lib -lcommon
 
 #-------------------------------------
