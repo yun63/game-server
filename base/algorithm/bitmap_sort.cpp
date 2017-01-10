@@ -21,26 +21,22 @@
 #include <cstdlib>
 #include <memory>
 
-static const int KBitsPerWord = 32;
-static const int KShift = 5;
-static const int KMask = 0x1f;
-static uint32_t bitmap[1 + N/KBitsPerWord];
 
-void init_bitmap(uint32_t *bitmap, uint32_t cap) {
+void init_bitmap(uint32_t *bm, uint32_t cap) {
     for (uint32_t i = 0; i < cap; i++) {
-        bitmap[i>>KShift] &= ~(0x01 << i&KMask);
+        bm[i>>kShift] &= ~(0x01 << (i & kMask));
     }
 }
 
-void set( uint32_t *bitmap, uint32_t k) {
-    bitmap[k>>KShift] |= (0x01 << i&KMask);
+void set(uint32_t *bm, uint32_t k) {
+    bm[k>>kShift] |= (0x01 << (k & kMask));
 }
 
-void clr(uint32_t *bitmap, uint32_t k) {
-    bitmap[i>>KShift] &= ~(0x01 << i&KMask);
+void clr(uint32_t *bm, uint32_t k) {
+    bm[k>>kShift] &= ~(0x01 << (k & kMask));
 }
 
-bool test(uint32_t *bitmap, uint32_t k) {
-    return (bitmap[k>>KShift] & (0x01<<i&KMask) == 1) ? true : false;
+bool test(uint32_t *bm, uint32_t k) {
+    return (bm[k>>kShift] & (0x01 << (k & kMask))) == 1;
 }
 

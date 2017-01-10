@@ -20,6 +20,7 @@
 #include <ctime>
 #include <unistd.h>
 
+#include "algorithm/bitmap_sort.h"
 #include "utils/utils.h"
 
 int main(int argc, char *argv[]) {
@@ -27,5 +28,24 @@ int main(int argc, char *argv[]) {
     std::vector<std::pair<int, int>> pool{{101, 5000}, {102, 4000}, {103, 500}, {104, 500}};
     int id = base::weighted_random(pool);
     std::cout << id << std::endl;
+
+    int cap = base::rand(10000, 20000);
+
+    init_bitmap(bitmap, cap);
+
+    int i;
+
+    while (std::cin >> i) {
+        set(bitmap, i);
+        if (i == 1000)
+            break;
+    }
+
+    for (i = 0; i < N; i++) {
+        if (test(bitmap, i)) {
+            std::cout << i << std::endl;
+        }
+    }
+
     return 0;
 }

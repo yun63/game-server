@@ -17,7 +17,7 @@ DEBUG	:= 1
 INCPATH ?= -I. -I$(GTEST_DIR)/include -I../protobuf/include
 
 ## 源代码子目录
-SRCDIRS := thread tinyxml utils 
+SRCDIRS := algorithm thread tinyxml utils 
 
 ## 生成目标目录
 OBJ_DIR = object.dir
