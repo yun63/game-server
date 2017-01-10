@@ -105,7 +105,6 @@ int weighted_random(std::vector<std::pair<int, int>> pool) {
     }
 
     int rbase = base::rand(sum);
-    std::cout << rbase << std::endl;
     int cur = 0;
 
     for (auto it = pool.begin(); it != pool.end(); it++) {

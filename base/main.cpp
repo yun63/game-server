@@ -24,9 +24,8 @@
 
 int main(int argc, char *argv[]) {
     base::srand(time(NULL));
-    while (true) {
-        std::cout << base::rand(10000) << std::endl;
-        sleep(1);
-    }
+    std::vector<std::pair<int, int>> pool{{101, 5000}, {102, 4000}, {103, 500}, {104, 500}};
+    int id = base::weighted_random(pool);
+    std::cout << id << std::endl;
     return 0;
 }
