@@ -37,6 +37,6 @@ void clr(uint32_t *bm, uint32_t k) {
 }
 
 bool test(uint32_t *bm, uint32_t k) {
-    return (bm[k>>kShift] & (0x01 << (k & kMask))) == 1;
+    return (bm[k>>kShift] & (0x01 << (k & kMask))) != 0;
 }
 
