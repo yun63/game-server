@@ -21,8 +21,6 @@
 #define _BASICTYPES_H_
 
 #include <stdint.h>
-#include <stddef.h>
-#include <sys/types.h>
 
 typedef int8_t              int8;
 typedef int16_t             int16;
@@ -36,14 +34,14 @@ typedef uint64_t            uint64;
 
 typedef unsigned char       byte;
 
-const uint16 kUint16Max = (   (uint16) 0xFFFF);
-const uint32 kUint32Max = (   (uint32) 0xFFFFFFFF);
-const uint64 kUint64Max = ( (((uint64) kUint32Max) << 32) | kUint32Max );
+const uint16 kUInt16Max = (   (uint16) 0xFFFF);
+const uint32 kUInt32Max = (   (uint32) 0xFFFFFFFF);
+const uint64 kUInt64Max = ( (((uint64) kUInt32Max) << 32) | kUInt32Max );
 
 const  int8  kInt8Max   = (   (  int8) 0x7F);
 const  int16 kInt16Max  = (   ( int16) 0x7FFF);
 const  int32 kInt32Max  = (   ( int32) 0x7FFFFFFF);
-const  int64 kInt64Max =  ( ((( int64) kInt32Max) << 32) | kUint32Max );
+const  int64 kInt64Max =  ( ((( int64) kInt32Max) << 32) | kUInt32Max );
 
 const  int8  kInt8Min   = (   (  int8) 0x80);
 const  int16 kInt16Min  = (   ( int16) 0x8000);
